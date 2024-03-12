@@ -1,0 +1,8 @@
+*.exe
+*.o
+*.gcno
+*.gcda
+.DS_Store
+*.dSYM
+*/a.out
+*/permissions.sh

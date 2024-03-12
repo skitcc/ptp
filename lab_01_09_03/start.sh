@@ -1,0 +1,1 @@
+gcc -std=c99 -Wall -Werror -Wpedantic -Wextra lab_01_09_03.c -lm
