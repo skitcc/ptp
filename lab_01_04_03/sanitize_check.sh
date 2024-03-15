@@ -1,40 +1,56 @@
 #!/bin/bash
 
-failed_tests=0
-working_dir=$(dirname "$0")
-app_path="$working_dir/app.exe"
-tests_dir="$working_dir/func_tests/data"
-
-
-asan_path="$working_dir/build_debug_asan.sh"
-msan_path="$working_dir/build_debug_msan.sh"
-ubsan_path="$working_dir/build_debug_ubsan.sh"
-
-
-for sanitizer_path in "$asan_path" "$msan_path" "$ubsan_path"; do
-
-    
-    echo "Тестирование санитайзера: $sanitizer_path"
-    
-    # Извлекаем название санитайзера из пути
-    sanitizer_name=$(basename "$sanitizer_path" | cut -d '_' -f 4 | cut -d '.' -f 1)
-
-    if eval "$sanitizer_path"; then
-
-        for test_file in "$tests_dir/pos_"*"_in.txt"; do
-            if ! "$app_path" < "$test_file" > /dev/null; then
-                echo "Тест \"$test_file\" не пройден с санитайзером \"$sanitizer_name\""
-                ((failed_tests++))
-            fi
-        done
-    else
-        echo "Ошибка при сборке программы с санитайзером \"$sanitizer_name\""
+execute_command() {
+    if [ "$VERBOSE" = true ]; then
+        echo "Исполнение файла func_tests.sh"
     fi
-done
+}
 
+build_with_asan() {
+    if [ "$VERBOSE" = true ]; then
+        echo "Сборка санитайзером AddressSanitizer"
+    fi
+    
+    ./build_debug_asan.sh
+}
 
-if [ "$failed_tests" -eq 0 ]; then
-    echo "Все тесты пройдены успешно"
+build_with_msan() {
+    if [ "$VERBOSE" = true ]; then
+        echo "Сборка санитайзером MemorySanitizer"
+    fi
+    ./build_debug_msan.sh
+}
+
+build_with_ubsan() {
+    if [ "$VERBOSE" = true ]; then
+        echo "Сборка санитайзером UndefinedBehaviorSanitizer"
+    fi
+    ./build_debug_ubsan.sh
+}
+
+run_tests() {
+    if [ "$VERBOSE" = true ]; then
+        echo "Запуск тестов"
+    fi
+    ./func_tests/scripts/func_tests.sh
+}
+
+if [ "$1" = "-v" ]; then
+    VERBOSE=true
 else
-    echo "Не пройдено тестов: $failed_tests"
+    VERBOSE=false
 fi
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$SCRIPT_DIR" || exit
+
+build_with_asan
+run_tests
+
+build_with_msan
+run_tests
+
+build_with_ubsan
+run_tests
+
+echo "Тестирование завершено успешно."
