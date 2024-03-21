@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Глобальная переменная, указывающая, были ли ошибки при тестировании
+TEST_FAILED=false
+
 execute_command() {
     if [ "$VERBOSE" = true ]; then
         echo "Исполнение файла func_tests.sh"
@@ -33,6 +36,11 @@ run_tests() {
         echo "Запуск тестов"
     fi
     ./func_tests/scripts/func_tests.sh
+    code_error="$?"
+    if [ $code_error != 0 ]; then
+        TEST_FAILED=true
+        echo "ОШИБКА ТЕСТОВ"
+    fi
 }
 
 if [ "$1" = "-v" ]; then
@@ -53,4 +61,8 @@ run_tests
 build_with_ubsan
 run_tests
 
-echo "Тестирование завершено успешно."
+if [ "$TEST_FAILED" = true ]; then
+    echo "Тестирование провалено."
+else
+    echo "Тестирование завершено успешно."
+fi
