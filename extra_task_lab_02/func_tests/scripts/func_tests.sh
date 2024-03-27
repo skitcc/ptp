@@ -1,4 +1,4 @@
-#!/bin/bash
+byb#!/bin/bash
 
 passed_tests=0
 total_tests=0
