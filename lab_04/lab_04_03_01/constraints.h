@@ -1,0 +1,17 @@
+#ifndef CONSTRAINTS_H
+#define CONSTRAINTS_H
+
+#define MAX_LEN_STRING 256
+#define MAX_SIZE_WORD 16
+#define ERROR_LEN_STRING 1
+#define ERROR_SIZE_WORD 2
+#define ERROR_WORD_AMOUNT 3
+#define ERROR_EMPTY_STRING 4
+#define ERROR_ALL_WORDS_DELETED 5
+#define ERROR_READ_STRING 6
+#define SEPARATORS " .,;:?!-"
+
+
+
+
+#endif
