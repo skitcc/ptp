@@ -5,7 +5,6 @@ working_dir=$(dirname "$0")
 
 if [ $# -eq 1 ] && [ -f "$1" ]; then
     executable="$working_dir/../../app.exe"
-    "$executable" < "$file_stream_in" > /dev/null
 
     if "$executable" < "$file_stream_in" > /dev/null; then
         exit 1
