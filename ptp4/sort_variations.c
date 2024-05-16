@@ -1,5 +1,4 @@
 #include "sort_variations.h"
-
 void selection_sort_with_ind(int a[], size_t n)
 {
     for (size_t i = 0; i < n - 1; i++)
@@ -49,5 +48,3 @@ void selection_sort_with_pointers(int a[], size_t n)
         }
     }
 }
-
-

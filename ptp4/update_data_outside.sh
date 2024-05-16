@@ -7,6 +7,9 @@ rse_executable="./rse.exe"
 
 REPEATS=1000
 
+gcc -Wall -Werror rse.c -o rse.exe -lm
+gcc -Wall -Werror mean.c -o mean.exe
+
 for app in "$apps_directory"/*.exe; do
 
     size=$(echo "$app" | cut -d'=' -f2 | cut -d'_' -f1)
@@ -17,16 +20,19 @@ for app in "$apps_directory"/*.exe; do
 
     "$app" > "$output_file"
 
-    mean=$(./mean.exe < "$output_file")
-
-    rse=$(./rse.exe "$mean" < "$output_file")
+    $(./mean.exe < "$output_file" > "temp.txt")
+    $(cat temp.txt "$output_file" > temp2.txt)
+    rse=$(./rse.exe < temp2.txt)
+    code_return="$(echo "$?")"
 
     iterations=0
-    while (( $(echo "$rse < 1.0" | bc -l) )) && ((iterations < REPEATS)); do
-        if [ $iterations -gt 1 ]; then
+    while [ "$code_return" -ne "1" -a $iterations -lt $REPEATS ]; do
+        if [ $iterations -gt 30 ]; then
             "$app" >> "$output_file"
-            mean=$(./mean.exe < "$output_file")
-            rse=$(./rse.exe "$mean" < "$output_file")
+            $(./mean.exe < "$output_file" > "temp.txt")
+            $(cat temp.txt "$output_file" > temp2.txt)
+            rse=$(./rse.exe < temp2.txt)
+            code_return="$(echo "$?")"
         fi
         iterations=$((iterations+1))
     done
@@ -37,3 +43,5 @@ for app in "$apps_directory"/*.exe; do
         echo "Maximum number of iterations reached. Exiting the loop."
     fi
 done
+
+rm rse.exe mean.exe temp.txt temp2.txt

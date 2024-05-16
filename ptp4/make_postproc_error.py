@@ -1,7 +1,13 @@
 import os
 import matplotlib.pyplot as plt
 
-directory = './data/preproced_data'
+s = input("Введите какие данные использовать in/out: ")
+
+if (s == "in"):
+    directory = './data/inside_data/preproced_data'
+elif (s == "out"):
+    directory = './data/outside_data/preproced_data'
+
 files = os.listdir(directory)
 
 d1 = {}
