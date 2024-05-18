@@ -1,18 +1,19 @@
 import os
 import matplotlib.pyplot as plt
 
-s = input("Введите какие данные использовать in/out: ")
-
+s = input("Введите какие данные использовать in/out/ticks: ")
+name = 'Среднее время (мс)'
 if (s == "in"):
     directory = './data/inside_data/preproced_data'
 elif (s == "out"):
     directory = './data/outside_data/preproced_data'
+elif (s == "ticks"):
+    directory = './data/inside_ticks_data/preproced_data'
+    name = 'Средние тики (TSC)'
     
 files = os.listdir(directory)
 
 d1 = {}
-d2 = {}
-d3 = {}
 
 for filename in files:
     f = open(os.path.join(directory, filename), 'r')
@@ -26,48 +27,35 @@ for filename in files:
     
     if mode == 1:
         d1[size] = [avg_time, q_low, q_middle, q_high]
-    elif mode == 2:
-        d2[size] = [avg_time, q_low, q_middle, q_high]
-    elif mode == 3:
-        d3[size] = [avg_time, q_low, q_middle, q_high]
     f.close()
 
 d1 = dict(sorted(d1.items()))
-d2 = dict(sorted(d2.items()))
-d3 = dict(sorted(d3.items()))
 
-# Создаем новый график
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(15, 10))
 
-# Рисуем график для каждой группы данных
-for data, label, color in [(d1, 'Indexes', 'blue'), (d2, 'Replace', 'black'), (d3, 'Pointers', 'green')]:
-    sizes = []
-    avg_times = []
+sizes = []
+avg_times = []
 
-    for size, values in data.items():
-        avg_time, q_low, q_middle, q_high = values
-        sizes.append(size)
-        avg_times.append(avg_time)
+for size, values in d1.items():
+    avg_time, q_low, q_middle, q_high = values
+    sizes.append(size)
+    avg_times.append(avg_time)
 
-        # Добавляем вертикальные линии
-        plt.vlines(size, q_low, q_high, color=color, linestyle='dashed')
+    plt.vlines(size, q_low, q_high, color='blue', linestyle='dashed')
 
-        # Отмечаем точки avg_time, q_low, q_high, q_middle
-        plt.scatter(size, avg_time, color='red', marker='o')
-        plt.scatter(size, q_low, color='green', marker='x')
-        plt.scatter(size, q_high, color='green', marker='x')
-        plt.scatter(size, q_middle, color='orange', marker='^')
+    plt.scatter(size, avg_time, color='red', marker='o')
+    plt.scatter(size, q_low, color='green', marker='x')
+    plt.scatter(size, q_high, color='green', marker='x')
+    plt.scatter(size, q_middle, color='orange', marker='^')
 
-    plt.plot(sizes, avg_times, label=label, color=color)
+plt.plot(sizes, avg_times, label='Indexes', color='blue')
 
-# Добавляем название графика и подписи осей
 plt.title('График зависимости среднего времени от размера данных с отмеченными точками')
 plt.xlabel('Размер данных')
-plt.ylabel('Среднее время (мс)')
+plt.ylabel(f'{name}')
 
-# Включаем сетку и легенду
 plt.grid(True)
 plt.legend()
+plt.savefig(f'moustache_{s}.svg', format='svg')
 
-# Показываем график
 plt.show()

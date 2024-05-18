@@ -1,0 +1,2 @@
+rse = 0.232650
+iterations : 17

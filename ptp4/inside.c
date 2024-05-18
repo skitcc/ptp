@@ -6,11 +6,11 @@
 #include <stdbool.h>
 
 #ifndef SIZE
-#error "WTF Billy"
+#error "ENTER SIZE USING -DSIZE"
 #endif
 
 #ifndef SORT
-#error "WTF Billy2"
+#error "ENTER SORT USING -DSORT"
 #endif
 
 #define REPEATS 1000
@@ -84,11 +84,14 @@ int main(void)
             double rse = (std_err / mean) * 100;
             
             if (rse < 1.0) {
+                // printf("rse = %lf\n", rse);
+                // printf("iterations : %zu\n", iterations + 1);
                 return 1;
             }
         }
         iterations++;
         if (iterations >= REPEATS) {
+            // printf("iterations : %zu", iterations);
             return 2;
         }
     }

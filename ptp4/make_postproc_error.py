@@ -1,12 +1,15 @@
 import os
 import matplotlib.pyplot as plt
 
-s = input("Введите какие данные использовать in/out: ")
-
+s = input("Введите какие данные использовать in/out/ticks: ")
+name = 'Среднее время (мс)'
 if (s == "in"):
     directory = './data/inside_data/preproced_data'
 elif (s == "out"):
     directory = './data/outside_data/preproced_data'
+elif (s == "ticks"):
+    directory = './data/inside_ticks_data/preproced_data'
+    name = 'Средние тики (TSC)'
 
 files = os.listdir(directory)
 
@@ -35,10 +38,8 @@ d1 = dict(sorted(d1.items()))
 d2 = dict(sorted(d2.items()))
 d3 = dict(sorted(d3.items()))
 
-# Построение графика
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(15, 10))
 
-# Списки для хранения координат для построения кривых
 sizes = []
 avg_times = []
 
@@ -71,12 +72,14 @@ for size, data in d3.items():
     sizes.append(size)
     avg_times.append(data[0])
 
-# Построение кривой, соединяющей точки (size, data[0])
 plt.plot(sizes, avg_times, color='red', linestyle='-', label='Pointers')
 
 plt.title('График зависимости времени от размера данных')
 plt.xlabel('Размер данных')
-plt.ylabel('Среднее время (мс)')
+plt.ylabel(f'{name}')
 plt.grid(True)
 plt.legend()
+
+plt.savefig(f'error_{s}.svg', format='svg')
+
 plt.show()

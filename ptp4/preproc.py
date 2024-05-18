@@ -2,13 +2,16 @@ import os
 import re
 from math import *
 
-s = input("Введите какие данные подготовить in/out: ")
+s = input("Введите какие данные подготовить in/out/ticks: ")
 if (s == "in"):
     directory = './data/inside_data/raw_data'
     directory_preproc = './data/inside_data/preproced_data'
 if (s == "out"):
     directory = './data/outside_data/raw_data'
     directory_preproc = './data/outside_data/preproced_data'
+elif (s == "ticks"):
+    directory = './data/inside_ticks_data/raw_data'
+    directory_preproc = './data/inside_ticks_data/preproced_data'
 files = os.listdir(directory)
 
 

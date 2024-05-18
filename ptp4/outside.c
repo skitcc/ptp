@@ -7,12 +7,13 @@
 #include <stdbool.h>
 
 #ifndef SIZE
-#error "WTF Billy"
+#error "ENTER SIZE USING -DSIZE"
 #endif
 
 #ifndef SORT
-#error "WTF Billy2"
+#error "ENTER SORT USING -DSORT"
 #endif
+
 
 #define REPEATS 1000
 #define N 100

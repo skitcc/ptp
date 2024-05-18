@@ -24,6 +24,7 @@ int main(void)
             double rse = (std_err / mean) * 100;
             
             if (rse < 1.0) {
+                // printf("rse = %lf\n", rse);
                 return 1;
             }
         }
