@@ -6,7 +6,6 @@
 #include <stdbool.h>
 #include <x86gprintrin.h>
 
-
 #ifndef SIZE
 #error "ENTER SIZE USING -DSIZE"
 #endif
@@ -15,26 +14,28 @@
 #error "ENTER SORT USING -DSORT"
 #endif
 
-
 #define REPEATS 1000
-#define N 100
-#define POS_RETURN_CODE 100
+#define POS_RETURN_CODE 100 
 
-
-typedef void (*SortFunction)(int[], size_t);
-
-unsigned long long calculate_time(int array[SIZE], size_t n, SortFunction sorting)
+unsigned long long calculate_time(int array[SIZE], size_t n)
 {
     unsigned long long start, end;
     start = __rdtsc();
 
-    sorting(array, n);
+    #if SORT == 1
+        selection_sort_with_ind(array, n);
+    #elif SORT == 2
+        selection_sort_with_replace(array, n);
+    #elif SORT == 3
+        selection_sort_with_pointers(array, n);
+    #else
+        #error "ERROR"
+    #endif
 
     end = __rdtsc();
 
     return end - start;
 }
-
 
 int init(int arr[SIZE], size_t n)
 {
@@ -47,17 +48,6 @@ int main(void)
 {
     int a[SIZE];
     init(a, SIZE);
-    SortFunction sorting_function;
-
-    #if SORT == 1
-        sorting_function = selection_sort_with_ind;
-    #elif SORT == 2
-        sorting_function = selection_sort_with_replace;
-    #elif SORT == 3
-        sorting_function = selection_sort_with_pointers;
-    #else
-        #error "ERROR"
-    #endif
 
     double mean = 0.0;
     double sum_squared = 0.0;
@@ -66,20 +56,17 @@ int main(void)
     size_t iterations = 0;
     for (size_t i = 0; i < REPEATS; i++)
     {
-        mean += calculate_time(a, SIZE, sorting_function);
+        mean += calculate_time(a, SIZE);
     }
     mean /= REPEATS;
     while (true) {
-        unsigned long long time = calculate_time(a, SIZE, sorting_function);
+        unsigned long long time = calculate_time(a, SIZE);
         printf("%llu\n", time);
         if (iterations > 15)
         {
-
             sum_squared += (time - mean) * (time - mean);
             s = sqrt(sum_squared / iterations);
-
             std_err = s / sqrt(iterations + 1);
-
             double rse = (std_err / mean) * 100;
             
             if (rse < 1.0) {
@@ -94,7 +81,6 @@ int main(void)
             return 2;
         }
     }
-
 
     return EXIT_SUCCESS;
 }

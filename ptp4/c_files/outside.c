@@ -1,5 +1,4 @@
 #include "sort_variations.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -14,19 +13,20 @@
 #error "ENTER SORT USING -DSORT"
 #endif
 
-
-#define REPEATS 1000
-#define N 100
-#define POS_RETURN_CODE 100
-
-typedef void (*SortFunction)(int[], size_t);
-
-double calculate_time(int array[SIZE], size_t n, SortFunction sorting)
+double calculate_time(int array[SIZE], size_t n)
 {
     struct timespec start, end;
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
 
-    sorting(array, n);
+    #if SORT == 1
+        selection_sort_with_ind(array, n);
+    #elif SORT == 2
+        selection_sort_with_replace(array, n);
+    #elif SORT == 3
+        selection_sort_with_pointers(array, n);
+    #else
+        #error "ERROR"
+    #endif
     
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
     
@@ -45,18 +45,6 @@ int main(void)
 {
     int a[SIZE];
     init(a, SIZE);
-    SortFunction sorting_function;
-
-    #if SORT == 1
-        sorting_function = selection_sort_with_ind;
-    #elif SORT == 2
-        sorting_function = selection_sort_with_replace;
-    #elif SORT == 3
-        sorting_function = selection_sort_with_pointers;
-    #else
-        #error "ERROR"
-    #endif
-
-    printf("%lf\n", calculate_time(a, SIZE, sorting_function));
+    printf("%lf\n", calculate_time(a, SIZE));
     return EXIT_SUCCESS;
 }

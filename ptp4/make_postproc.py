@@ -1,14 +1,12 @@
 import os
 import matplotlib.pyplot as plt
 
-# Предопределенные пути к данным
 directories = {
     'in': './data/inside_data/preproced_data',
     'out': './data/outside_data/preproced_data',
     'ticks': './data/inside_ticks_data/preproced_data'
 }
 
-# Имя для графика
 names = {
     'in': 'Среднее время (мс)',
     'out': 'Среднее время (мс)',
