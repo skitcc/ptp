@@ -54,7 +54,7 @@ def plot_linear(data, name, suffix):
     plt.legend()
     plt.grid(True)
     
-    plt.savefig(f'linear_{suffix}.svg', format='svg')
+    plt.savefig(f'./graphs/linear_{suffix}.svg', format='svg')
     plt.close()
 
 def load_data_error(directory):
@@ -127,7 +127,7 @@ def plot_error(data, name, suffix):
     plt.grid(True)
     plt.legend()
     
-    plt.savefig(f'error_{suffix}.svg', format='svg')
+    plt.savefig(f'./graphs/error_{suffix}.svg', format='svg')
     plt.close()
 
 def load_data_moustache(directory):
@@ -176,7 +176,7 @@ def plot_moustache(data, name, suffix):
     
     plt.grid(True)
     plt.legend()
-    plt.savefig(f'moustache_{suffix}.svg', format='svg')
+    plt.savefig(f'./graphs/moustache_{suffix}.svg', format='svg')
     plt.close()
 
 def main():
