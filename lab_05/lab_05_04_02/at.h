@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <inttypes.h>
+#include <sys/stat.h>
 
 int is_sorted(struct product products[], int count);
 void insert_product(struct product products[], int *count, struct product product_in);

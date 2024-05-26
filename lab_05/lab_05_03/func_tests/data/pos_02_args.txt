@@ -1,1 +1,1 @@
-pos_02_in.txt
+s ./func_tests/data/in_02.bin

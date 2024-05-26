@@ -5,4 +5,13 @@
 #define WRONG_FILE 2
 #define EMPTY_FILE 3
 
+#define CREATE_OPTION 4
+#define PRINT_OPTION 5
+#define SORT_OPTION 6
+#define IMPORT_OPTION 7
+#define EXPORT_OPTION 8
+#define WRONG_OPTION 9
+#define WRONG_CHAR 10
+#define WRONG_FORMAT 11
+
 #endif

@@ -1,6 +1,7 @@
 #ifndef IO_H
 #define IO_H
 
+#include "file_checker.h"
 #include "constraints.h"
 #include <stdio.h>
 #include <stdlib.h>

@@ -23,10 +23,16 @@ int write_numbers(const char *argv[])
             fclose(f);
         }
         else
+        {
+            fclose(f);
             return WRONG_AMOUNT;
+        }
     }
     else
+    {
+        fclose(f);
         return WRONG_FILE;
+    }
 
     return EXIT_SUCCESS;
 }
@@ -48,10 +54,16 @@ int print_numbers(const char *argv[], char *res)
             strcat(res, " ");
         }
         if (c == 0)
+        {
+            fclose(f);
             return EMPTY_FILE;
+        }
     }
     else
+    {
+        fclose(f);
         return WRONG_FILE;
-
+    }
+    fclose(f);
     return EXIT_SUCCESS;
 }

@@ -58,9 +58,16 @@ int insert_field_in_pos(const char *argv[])
     struct product products[MAX_PRODUCTS];
     int count = 0;
     FILE *f = fopen(argv[2], "r");
-    if (f == NULL) {
+    if (f == NULL) 
+    {
         return WRONG_FILE;
     }
+    struct stat st;
+    stat(argv[2], &st);
+    long size = st.st_size;
+    if (size == 0)
+        return EMPTY_FILE;
+
 
     int rc = check_fields(f, products, &count);
     if (rc != 0) 
@@ -70,7 +77,7 @@ int insert_field_in_pos(const char *argv[])
     }
     fclose(f);
 
-    if (count > MAX_PRODUCTS) 
+    if (count >= MAX_PRODUCTS) 
     {
         return WRONG_AMOUNT;
     }

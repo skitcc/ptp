@@ -25,8 +25,10 @@ int fill_name(const char *input_filename, const char *substr)
     int count = 0;
     int rc = check_fields(input, products, &count);
     if (rc != 0)
+    {
+        fclose(input);
         return rc;
-
+    }
     for (int i = 0; i < count; i++)
     {
         if (is_suffix(products[i].name, substr)) {
