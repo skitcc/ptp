@@ -1,1 +1,1 @@
-app.txt
+p ./func_tests/data/inn_04.bin 1

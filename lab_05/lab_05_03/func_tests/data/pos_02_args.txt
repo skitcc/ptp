@@ -1,1 +1,1 @@
-s ./func_tests/data/in_02.bin
+s ./func_tests/data/inp_02.bin

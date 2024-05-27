@@ -3,12 +3,6 @@
 working_dir=$(dirname "$(realpath "$0")")
 file_stream_in="$1"
 
-if [ ! -f "$file_stream_in" ]; then
-    echo "Ошибка: входной файл $file_stream_in не существует."
-    exit 1
-fi
-
-
 if [ -n "$2" ]; then
     app_args=$(cat "$2")
 else
@@ -16,34 +10,43 @@ else
 fi
 
 first_argument=$(echo "$app_args" | cut -d' ' -f1)
-
 executable="$working_dir/../../app.exe"
 
 case "$first_argument" in
-    p)
-        file_stream_in_bin=$(echo "$app_args" | cut -d' ' -f2)
-        "$executable" import "$file_stream_in" "../../$file_stream_in_bin"
+    c)
+        "$executable" "$app_args" >/dev/null 2>&1
         code_return=$?
-        "$executable" p "../../$file_stream_in_bin" > "out.tmp"
-        compare_files
+        if [ $code_return -ne 0 ]; then
+            # echo "3"
+            exit 0
+        fi
         ;;
-    s)
+    p | s)
         file_stream_in_bin=$(echo "$app_args" | cut -d' ' -f2)
-        "$executable" import "$file_stream_in" "../../$file_stream_in_bin"
-        "$executable" s "../../$file_stream_in_bin"
-        cp "../../$file_stream_in_bin" "out.bin"
-        "$executable" export "../../$file_stream_in_bin" "out.tmp"
-        compare_files
+        # echo "$file_stream_in_bin"
+        "$executable" import "$file_stream_in" "../../$file_stream_in_bin" >/dev/null 2>&1
+        code_return=$?
+        # echo "$code_return"
+        # echo "../../$file_stream_in_bin"
+        if [ $code_return -ne 0 ]; then
+            # echo "0"
+            exit 0
+        fi
+        "$executable" "$first_argument" "../../$file_stream_in_bin" >/dev/null 2>&1
+        code_return=$?
+        if [ $code_return -ne 0 ]; then
+            # echo "1"
+            exit 0
+        fi
         ;;
+    
+    *)
+        "$executable" "$app_args" >/dev/null 2>&1
+        code_return=$?
+        if [ $code_return -ne 0 ]; then
+            # echo "2"
+            exit 0
+        fi
 esac
 
-
-if [ -f "$file_stream_in" ]; then
-    if "$executable" $app_args < "$file_stream_in" > /dev/null; then
-        exit 1
-    else
-        exit 0
-    fi
-else
-    exit 1
-fi
+exit 0

@@ -2,7 +2,7 @@
 
 int args_checker(int argc, const char *argv[])    
 {
-    if (argc == 1 || argc == 0)
+    if (argc == 1 || argc == 0 || argc > 4)
     {
         printf("Кол-во аргументов не может быть нулевое\n");
         return WRONG_AMOUNT_ARGUMENTS;

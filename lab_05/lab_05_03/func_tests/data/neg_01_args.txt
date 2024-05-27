@@ -1,1 +1,1 @@
-neg_01_in.txt
+z ./func_tests/data/inn_01.bin

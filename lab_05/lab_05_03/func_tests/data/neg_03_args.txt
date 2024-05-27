@@ -1,1 +1,1 @@
-neg_03_in.txt
+c 2 ./func_tests/data/inn_03.bin 1

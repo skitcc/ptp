@@ -68,6 +68,5 @@ for neg_test_file in "$SCRIPT_DIR/../data/neg_"*"_in.txt"; do
         fi
     fi
 done
-
 echo "Пройдено $passed_tests из $total_tests тестов"
 exit "$((total_tests - passed_tests))"
