@@ -13,7 +13,12 @@ def process_files(directory, directory_preproc):
         with open(filepath, 'r') as f:
             average_time, low_q, middle_q, high_q = 0, 0, 0, 0
             mn, mx = inf, -inf
-            temp = [float(line.strip()) for line in f]
+            temp = []
+            
+            for line in f:
+                if re.search(r'rse\s*=\s*\d+', line) or re.search(r'iterations\s*=\s*\d+', line) or re.search(r'iterations_reached\s*=\s*\d+', line):
+                    break
+                temp.append(float(line.strip()))
         
         temp.sort()
         l = len(temp)

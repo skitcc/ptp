@@ -5,6 +5,7 @@
 #include <time.h>
 #include <stdbool.h>
 
+#define MAX_ITERATIONS_REACHED 1
 #ifndef SIZE
 #error "ENTER SIZE USING -DSIZE"
 #endif
@@ -13,7 +14,7 @@
 #error "ENTER SORT USING -DSORT"
 #endif
 
-#define REPEATS 1000
+#define REPEATS 10000
 #define POS_RETURN_CODE 100
 
 double calculate_time(int array[SIZE], size_t n)
@@ -40,12 +41,23 @@ double calculate_time(int array[SIZE], size_t n)
 int init(int arr[SIZE], size_t n)
 {
     for(size_t i = 0; i < n; i++)
-        arr[i] = (int)(i * 230923 / 52);
+        arr[i] = rand() % 1000;
     return 0;
 }
 
+// int print_array(int *array)
+// {
+//     for (int i = 0; i < SIZE; i++)
+//     {
+//         printf("%d ", array[i]);
+//     }
+//     printf("\n");
+//     return 0;
+// }
+
 int main(void)
 {
+    srand(time(NULL));
     int a[SIZE];
     init(a, SIZE);
 
@@ -60,30 +72,27 @@ int main(void)
     }
     mean /= REPEATS;
     while (true) {
+        init(a, SIZE);
         double time = calculate_time(a, SIZE);
-        printf("%lf\n", time);
-        if (iterations > 15)
+        printf("%lf\n",time);
+        sum_squared += (time - mean) * (time - mean);
+        s = sqrt(sum_squared / iterations);
+
+        std_err = s / sqrt(iterations + 1);
+
+        double rse = (std_err / mean) * 100;
+        if (rse < 1.0) 
         {
-
-            sum_squared += (time - mean) * (time - mean);
-            s = sqrt(sum_squared / iterations);
-
-            std_err = s / sqrt(iterations + 1);
-
-            double rse = (std_err / mean) * 100;
-            
-            if (rse < 1.0) {
-                // printf("rse = %lf\n", rse);
-                // printf("iterations : %zu\n", iterations + 1);
-                return 1;
-            }
+            printf("rse = %lf\n", rse);
+            printf("iterations : %zu\n", iterations + 1);
+            return EXIT_SUCCESS;
         }
         iterations++;
         if (iterations >= REPEATS) {
-            // printf("iterations : %zu", iterations);
-            return 2;
+            printf("iterations_reached : %zu", iterations);
+            return MAX_ITERATIONS_REACHED;
         }
     }
 
-    return EXIT_SUCCESS;
+    return 2;
 }

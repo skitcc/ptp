@@ -1,54 +1,63 @@
 #!/bin/bash
 
+generate_filename() {
+    local size="$1"
+    local method="$2"
+    local timestamp="$3"
+    echo "size={$size}_method={$method}_{$timestamp}.txt"
+}
+
 echo "Starting updating inside measurement(ms)..."
-for app in apps/apps_inside/*.exe; do
+for app in $(find apps/apps_inside -name "*.exe" | sort -t'=' -k2,2n -k3,3n); do
     size=$(echo "$app" | cut -d'=' -f2 | cut -d'_' -f1)
     method=$(echo "$app" | cut -d'=' -f3 | cut -d'.' -f1)
     timestamp=$(date +%s)
-
-    "$app" > "./data/inside_data/raw_data/size=${size}_method=${method}_${timestamp}.txt"
+    filename=$(generate_filename "$size" "$method" "$timestamp")
+    "$app" > "./data/inside_data/raw_data/$filename"
 done
 echo "Ending updating inside measurement..."
 
 echo "Starting updating inside measurement(tsc)..."
-for app in apps/apps_inside_ticks/*.exe; do
+for app in $(find apps/apps_inside_ticks -name "*.exe" | sort -t'=' -k2,2n -k3,3n); do
     size=$(echo "$app" | cut -d'=' -f2 | cut -d'_' -f1)
     method=$(echo "$app" | cut -d'=' -f3 | cut -d'.' -f1)
     timestamp=$(date +%s)
 
-    "$app" > "./data/inside_ticks_data/raw_data/size=${size}_method=${method}_${timestamp}.txt"
+    filename=$(generate_filename "$size" "$method" "$timestamp")
+
+    "$app" > "./data/inside_ticks_data/raw_data/$filename"
 done
 echo "Ending updating inside measurement..."
 
 echo "Starting updating outside measurement(ms)..."
-apps_directory="./apps/apps_outside"
 
-REPEATS=1000
+REPEATS=15000
 
 gcc -Wall -Werror ./c_files/rse.c -o rse.exe -lm
 gcc -Wall -Werror ./c_files/mean.c -o mean.exe
 
-for app in "$apps_directory"/*.exe; do
+for app in $(find apps/apps_outside -name "*.exe" | sort -t'=' -k2,2n -k3,3n); do
     size=$(echo "$app" | cut -d'=' -f2 | cut -d'_' -f1)
     method=$(echo "$app" | cut -d'=' -f3 | cut -d'.' -f1)
     timestamp=$(date +%s)
 
-    output_file="./data/outside_data/raw_data/size=${size}_method=${method}_${timestamp}.txt"
+    output_file=$(generate_filename "$size" "$method" "$timestamp")
 
-    "$app" > "$output_file"
+    "$app" > "./data/outside_data/raw_data/$output_file"
 
-    ./mean.exe < "$output_file" > temp.txt
-    cat temp.txt "$output_file" > temp2.txt
+    ./mean.exe < "./data/outside_data/raw_data/$output_file" > temp.txt
+    (cat temp.txt; echo ""; cat "./data/outside_data/raw_data/$output_file") > temp2.txt
+    ./rse.exe < "temp2.txt" > /dev/null
     code_return=$?
 
     iterations=0
     while [ "$code_return" -ne 1 ] && [ $iterations -lt $REPEATS ]; do
-        if [ $iterations -gt 30 ]; then
-            "$app" >> "$output_file"
-            ./mean.exe < "$output_file" > temp.txt
-            cat temp.txt "$output_file" > temp2.txt
-            code_return=$?
-        fi
+        "$app" >> "./data/outside_data/raw_data/$output_file"
+        ./mean.exe < "./data/outside_data/raw_data/$output_file" > temp.txt
+        cat temp.txt "./data/outside_data/raw_data/$output_file" > temp2.txt
+        ./rse.exe < "temp2.txt" > /dev/null
+        code_return=$?
+
         iterations=$((iterations+1))
     done
 

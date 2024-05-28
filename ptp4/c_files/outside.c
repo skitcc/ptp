@@ -37,12 +37,13 @@ double calculate_time(int array[SIZE], size_t n)
 int init(int arr[SIZE], size_t n)
 {
     for(size_t i = 0; i < n; i++)
-        arr[i] = (int)(i * 230923 / 52);
+        arr[i] = rand();
     return 0;
 }
 
 int main(void)
 {
+    srand(time(NULL));
     int a[SIZE];
     init(a, SIZE);
     printf("%lf\n", calculate_time(a, SIZE));

@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#define REPEATS 1000
+#define REPEATS 10000
+#define MAX_ITERATIONS_REACHED 1
 
 int main(void)
 {
@@ -14,24 +15,25 @@ int main(void)
     scanf("%lf", &mean);
     while (scanf("%lf", &time) != EOF) {
         printf("%lf\n", time);
-        if (iterations > 15)
-        {
-            sum_squared += (time - mean) * (time - mean);
-            s = sqrt(sum_squared / iterations);
 
-            std_err = s / sqrt(iterations + 1);
+        sum_squared += (time - mean) * (time - mean);
+        s = sqrt(sum_squared / iterations);
 
-            double rse = (std_err / mean) * 100;
-            
-            if (rse < 1.0) {
-                // printf("rse = %lf\n", rse);
-                return 1;
-            }
+        std_err = s / sqrt(iterations + 1);
+
+        double rse = (std_err / mean) * 100;
+        
+        if (rse < 1.0) {
+            printf("rse = %lf\n", rse);
+            printf("iterations = %d\n", iterations);
+            return EXIT_SUCCESS;
         }
+        
         iterations++;
         if (iterations >= REPEATS) {
-            return 2;
+            printf("iterations_reached : %zu", iterations);
+            return MAX_ITERATIONS_REACHED;
         }
     } 
-    return EXIT_SUCCESS;
+    return 2;
 }
