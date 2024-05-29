@@ -16,7 +16,7 @@ def process_files(directory, directory_preproc):
             temp = []
             
             for line in f:
-                if re.search(r'rse\s*=\s*\d+', line) or re.search(r'iterations\s*=\s*\d+', line) or re.search(r'iterations_reached\s*=\s*\d+', line):
+                if re.search(r'rse\s*=\s*\d+', line) or re.search(r'iterations\s*=\s*\d+', line) or re.search(r'iterations_reached\s*:\s*\d+', line):
                     break
                 temp.append(float(line.strip()))
         

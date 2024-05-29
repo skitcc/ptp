@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#define REPEATS 10000
+#define REPEATS 1000
 #define MAX_ITERATIONS_REACHED 1
 
 int main(void)
@@ -15,7 +15,6 @@ int main(void)
     scanf("%lf", &mean);
     while (scanf("%lf", &time) != EOF) {
         printf("%lf\n", time);
-
         sum_squared += (time - mean) * (time - mean);
         s = sqrt(sum_squared / iterations);
 
@@ -23,9 +22,9 @@ int main(void)
 
         double rse = (std_err / mean) * 100;
         
-        if (rse < 1.0) {
+        if (rse < 1.0 && iterations > 20) {
             printf("rse = %lf\n", rse);
-            printf("iterations = %d\n", iterations);
+            printf("iterations = %zu\n", iterations);
             return EXIT_SUCCESS;
         }
         

@@ -7,3 +7,6 @@ rm -f ./data/inside_data/preproced_data/*txt
 rm -f ./data/inside_ticks_data/preproced_data/*txt
 rm -f ./data/outside_data/preproced_data/*txt
 rm -f ./graphs/*
+rm -rf ./apps/apps_inside
+rm -rf ./apps/apps_inside_ticks
+rm -rf ./apps/apps_outside

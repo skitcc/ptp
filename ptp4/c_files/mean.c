@@ -12,6 +12,6 @@ int main(void)
         c++;
     }
     mean /= c;
-    printf("%lf", mean);
+    printf("%lf\n", mean);
     return 0;
 }

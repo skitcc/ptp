@@ -15,7 +15,7 @@
 #error "ENTER SORT USING -DSORT"
 #endif
 
-#define REPEATS 30000
+#define REPEATS 1000
 #define POS_RETURN_CODE 100 
 
 unsigned long long calculate_time(int array[SIZE], size_t n)
@@ -41,7 +41,7 @@ unsigned long long calculate_time(int array[SIZE], size_t n)
 int init(int arr[SIZE], size_t n)
 {
     for(size_t i = 0; i < n; i++)
-        arr[i] = rand();
+        arr[i] = rand() % 1000;
     return 0;
 }
 
@@ -56,32 +56,39 @@ int main(void)
     double s = 0.0;
     double std_err = 0.0;
     size_t iterations = 0;
+    int temp[SIZE];
     for (size_t i = 0; i < REPEATS; i++)
     {
-        mean += calculate_time(a, SIZE);
+        for (size_t j = 0; j < SIZE; j++) 
+            temp[j] = a[j];
+        mean += calculate_time(temp, SIZE);
     }
+
     mean /= REPEATS;
     while (true) {
-        unsigned long long time = calculate_time(a, SIZE);
-        printf("%llu\n", time);
-        
+
+        for (size_t j = 0; j < SIZE; j++) 
+            temp[j] = a[j];
+        double time = calculate_time(temp, SIZE);
+        printf("%lf\n",time);
         sum_squared += (time - mean) * (time - mean);
         s = sqrt(sum_squared / iterations);
+
         std_err = s / sqrt(iterations + 1);
+
         double rse = (std_err / mean) * 100;
-        
-        if (rse < 1.0) {
+        if (rse < 1.0 && iterations > 20) 
+        {
             printf("rse = %lf\n", rse);
             printf("iterations : %zu\n", iterations + 1);
             return EXIT_SUCCESS;
         }
-        
         iterations++;
         if (iterations >= REPEATS) {
-            printf("iterations_reached : %zu", iterations);
+            printf("iterations_reached : %zu\n", iterations);
             return MAX_ITERATIONS_REACHED;
         }
     }
 
-    return EXIT_SUCCESS;
+    return 2;
 }
