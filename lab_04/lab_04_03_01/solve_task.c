@@ -1,4 +1,5 @@
 #include "solve_task.h"
+// Заполняем все первые вхождения букв
 void fill_first_occurrences(char *str) 
 {
     int hash[MAX_LEN_STRING] = { 0 };
@@ -15,7 +16,7 @@ void fill_first_occurrences(char *str)
     }
     str[cur_ind] = '\0'; 
 }
-
+// Сравнение текущего с последним словом, параллельно заполняя строку
 void compare_to_last(char array[MAX_LEN_STRING / 2][MAX_SIZE_WORD + 1], size_t word_count, char result[MAX_LEN_STRING + 1]) 
 {
     char cleaned_word[MAX_SIZE_WORD];
@@ -30,7 +31,7 @@ void compare_to_last(char array[MAX_LEN_STRING / 2][MAX_SIZE_WORD + 1], size_t w
         strcat(result, " ");
     }
 }
-
+// Заполнение начального массива словами
 int fill_array(char array[MAX_LEN_STRING / 2][MAX_SIZE_WORD + 1], char str[MAX_LEN_STRING + 1], size_t *word_count)
 {
     *word_count = 0;

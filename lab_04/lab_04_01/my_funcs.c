@@ -1,5 +1,6 @@
 #include "my_funcs.h"
 
+// Функция ищет в строке s1 первое вхождение любого символа из строки s2.
 char *my_strpbrk(const char *s1, const char *s2)
 {
     for (int i = 0; s1[i] != '\0'; i++)
@@ -12,7 +13,7 @@ char *my_strpbrk(const char *s1, const char *s2)
     }
     return NULL;
 }
-
+// Функция возвращает длину начального сегмента строки s1, содержащего только символы из строки s2.
 size_t my_strspn(const char *s1, const char *s2)
 {
     const char *ptr1, *ptr2;
@@ -33,6 +34,7 @@ size_t my_strspn(const char *s1, const char *s2)
     return count;
 }
 
+// Функция возвращает длину начального сегмента строки s1, не содержащего символы из строки s2.
 size_t my_strcspn(const char *s1, const char *s2)
 {
     const char *ptr1, *ptr2;
@@ -51,6 +53,7 @@ size_t my_strcspn(const char *s1, const char *s2)
     return count;
 }
 
+// Функция находит первое вхождение символа ch в строке s.
 char *my_strchr(const char *s, int ch) 
 {
     if (s == NULL)
@@ -71,6 +74,7 @@ char *my_strchr(const char *s, int ch)
     return NULL;
 }
 
+// Функция находит последнее вхождение символа ch в строке s.
 char *my_strrchr(const char *s, int ch)
 {
     if (s == NULL)

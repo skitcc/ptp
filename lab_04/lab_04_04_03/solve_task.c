@@ -1,12 +1,12 @@
 #include "solve_task.h"
 
-
+// Пропуск пробелов перед номером
 void skip_whitespaces(char str[MAX_LEN_STRING + 1], int *counter)
 {
     while (isspace(str[*counter]))
         (*counter)++;
 }
-
+// Пропуск кода строны
 int skip_code_country(char str[MAX_LEN_STRING + 1], int *counter)
 {
     int flag = 1;
@@ -45,7 +45,7 @@ int skip_code_country(char str[MAX_LEN_STRING + 1], int *counter)
     }
     return 0;
 }
-
+// Проверка кода оператора
 int check_code_operator(char str[MAX_LEN_STRING + 1], int *counter)
 {
     int count = 0;
@@ -62,7 +62,7 @@ int check_code_operator(char str[MAX_LEN_STRING + 1], int *counter)
         return 2;
     return 0;
 }
-
+// Проверка цифр (после кода страны и кода оператора)
 int check_digits(char str[MAX_LEN_STRING + 1], int *counter, int len)
 {
     int c = 0;
@@ -80,7 +80,7 @@ int check_digits(char str[MAX_LEN_STRING + 1], int *counter, int len)
     return 0;
 }
 
-
+// Основная функция проверки телефонного номиера 
 int check_phone_number(char str[MAX_LEN_STRING + 1])
 {
     int counter = 0;

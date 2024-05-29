@@ -1,5 +1,6 @@
 #include "solve_task.h"
 
+// Функция для для проверки разделителя
 int is_separator(const char symbol, const char *separators)
 {
     for (size_t i = 0; i < strlen(separators); i++)
@@ -8,7 +9,7 @@ int is_separator(const char symbol, const char *separators)
 
     return 1;
 }
-
+// Заполнение массива по словам
 int fill_array(char array[MAX_LEN_STRING / 2][MAX_SIZE_WORD + 1], char str[MAX_LEN_STRING + 1], size_t *word_count)
 {
     *word_count = 0;
@@ -33,7 +34,7 @@ int fill_array(char array[MAX_LEN_STRING / 2][MAX_SIZE_WORD + 1], char str[MAX_L
     return 0;
 }
 
-
+// Проверка на уникальность элемента в одной линии
 bool is_uniq_in_line(char array[MAX_LEN_STRING / 2][MAX_SIZE_WORD + 1], int word_count, char word[MAX_SIZE_WORD + 1], int position)
 {
     char cleaned_array_elem[MAX_SIZE_WORD];
@@ -51,7 +52,7 @@ bool is_uniq_in_line(char array[MAX_LEN_STRING / 2][MAX_SIZE_WORD + 1], int word
     }
     return true;
 }
-
+// Проверка на уникальность элемента в другоой линии
 bool is_uniq_in_other(char array[MAX_LEN_STRING / 2][MAX_SIZE_WORD + 1], int word_count, char word[MAX_SIZE_WORD + 1])
 {
     for (int i = 0; i < word_count; i++)
@@ -62,7 +63,7 @@ bool is_uniq_in_other(char array[MAX_LEN_STRING / 2][MAX_SIZE_WORD + 1], int wor
     return true;
 }
 
-
+// Печать результата
 void print_result(char array1[MAX_LEN_STRING / 2][MAX_SIZE_WORD + 1], char array2[MAX_LEN_STRING / 2][MAX_SIZE_WORD + 1], int word_count1, int word_count2, char result[MAX_LEN_STRING * 2 + 1])
 {
     char cleaned_word[MAX_SIZE_WORD];
