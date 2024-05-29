@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stddef.h>
 
+// Функция для расчета среднего значения для внешних измерений
 int main(void)
 {
     size_t c = 0;

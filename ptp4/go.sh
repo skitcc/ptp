@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Запуск всех скриптов поочередно
+
 if [[ $# != 2 ]]; then
     echo "Enter SIZE and SORT"
     exit 1

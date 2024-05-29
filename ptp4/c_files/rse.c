@@ -4,6 +4,7 @@
 #define REPEATS 1000
 #define MAX_ITERATIONS_REACHED 1
 
+// Функция для динамического подсчета RSE для внешних измерений
 int main(void)
 {
     double time = 0.0;
@@ -30,6 +31,7 @@ int main(void)
         
         iterations++;
         if (iterations >= REPEATS) {
+            printf("rse = %lf\n", rse);
             printf("iterations_reached : %zu", iterations);
             return MAX_ITERATIONS_REACHED;
         }

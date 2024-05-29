@@ -1,4 +1,6 @@
 #include "sort_variations.h"
+
+// Сортировка выбором с использованием операции индексации
 void selection_sort_with_ind(int a[], size_t n)
 {
     for (size_t i = 0; i < n - 1; i++)
@@ -15,6 +17,7 @@ void selection_sort_with_ind(int a[], size_t n)
     }
 }
 
+// Сортировка выбором с использованием операции формальной замены индексации
 void selection_sort_with_replace(int a[], size_t n)
 {
     for (size_t i = 0; i < n - 1; i++)
@@ -31,6 +34,7 @@ void selection_sort_with_replace(int a[], size_t n)
     }
 }
 
+// Сортировка выбором с использованием указателей
 void selection_sort_with_pointers(int a[], size_t n)
 {
     for (int *ptr = a; ptr < a + n - 1; ptr++)

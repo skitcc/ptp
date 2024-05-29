@@ -1,18 +1,22 @@
 import os
 import matplotlib.pyplot as plt
 
+
+os.makedirs("./graphs", exist_ok=True)
+# Словарь нужных директорий для взятия данных
 directories = {
     'in': './data/inside_data/preproced_data',
     'out': './data/outside_data/preproced_data',
     'ticks': './data/inside_ticks_data/preproced_data'
 }
-
+# Словарь с информацией для измерений
 names = {
     'in': 'Среднее время (мс)',
     'out': 'Среднее время (мс)',
     'ticks': 'Средние тики (TSC)'
 }
 
+# Функция для загрузки данных для кусочно-линейных графиков
 def load_data_linear(directory):
     d1, d2, d3 = {}, {}, {}
     files = os.listdir(directory)
@@ -37,6 +41,7 @@ def load_data_linear(directory):
     
     return d1, d2, d3
 
+# Функция построения кусочно-линейных графиков
 def plot_linear(data, name, suffix):
     d1, d2, d3 = data
     
@@ -55,6 +60,7 @@ def plot_linear(data, name, suffix):
     plt.savefig(f'./graphs/linear_{suffix}.svg', format='svg')
     plt.close()
 
+# Функция для загрузки данных для графиков с ошибкой
 def load_data_error(directory):
     d1, d2, d3 = {}, {}, {}
     files = os.listdir(directory)
@@ -81,6 +87,7 @@ def load_data_error(directory):
     
     return d1, d2, d3
 
+# Функция построения графиков с ошибкой
 def plot_error(data, name, suffix):
     d1, d2, d3 = data
     
@@ -128,6 +135,7 @@ def plot_error(data, name, suffix):
     plt.savefig(f'./graphs/error_{suffix}.svg', format='svg')
     plt.close()
 
+# Функция для загрузки данных для графиков с усами
 def load_data_moustache(directory):
     d1 = {}
     files = os.listdir(directory)
@@ -149,6 +157,7 @@ def load_data_moustache(directory):
     
     return d1
 
+# Функция построения графиков с усами
 def plot_moustache(data, name, suffix):
     d1 = data
     
@@ -189,6 +198,7 @@ def main():
         
         data_moustache = load_data_moustache(directory)
         plot_moustache(data_moustache, name, key)
+    print("All graphs plotted successfully")
 
 if __name__ == '__main__':
     main()

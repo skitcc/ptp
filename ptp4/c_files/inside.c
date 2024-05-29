@@ -17,6 +17,7 @@
 #define REPEATS 1000
 #define POS_RETURN_CODE 100
 
+// Функция для измерения времени сортировки, выбранной в зависимости от выбора пользователя
 double calculate_time(int array[SIZE], size_t n)
 {
     struct timespec start, end;
@@ -38,6 +39,7 @@ double calculate_time(int array[SIZE], size_t n)
     return execution_time_ms;
 }
 
+// Функция для заполнения массива случайными значениями
 int init(int arr[SIZE], size_t n)
 {
     for(size_t i = 0; i < n; i++)
@@ -57,14 +59,17 @@ int main(void)
     double std_err = 0.0;
     size_t iterations = 0;
     int temp[SIZE];
+
+    // Подсчет среднего значения
     for (size_t i = 0; i < REPEATS; i++)
     {
         for (size_t j = 0; j < SIZE; j++) 
             temp[j] = a[j];
         mean += calculate_time(temp, SIZE);
     }
-
     mean /= REPEATS;
+    
+    // Динамический подсчет RSE
     while (true) {
 
         for (size_t j = 0; j < SIZE; j++) 

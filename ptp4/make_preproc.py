@@ -2,6 +2,7 @@ import os
 import re
 from math import inf
 
+# Функция для обработки файла и записи обработанных данных в их соответствующие директории
 def process_files(directory, directory_preproc):
     if not os.path.exists(directory_preproc):
         os.makedirs(directory_preproc)
@@ -39,12 +40,14 @@ def process_files(directory, directory_preproc):
         with open(preproc_filepath, 'w') as f1:
             f1.write(f"{average_time} {mn} {mx} {low_q} {middle_q} {high_q} {mode}")
 
+# Словарь со всеми нужными директориями
 data_directories = {
     'in': ('./data/inside_data/raw_data', './data/inside_data/preproced_data'),
     'out': ('./data/outside_data/raw_data', './data/outside_data/preproced_data'),
     'ticks': ('./data/inside_ticks_data/raw_data', './data/inside_ticks_data/preproced_data')
 }
 
+# Основная функция записи обработанных данных
 def main():
     print("Preparing data for graph...")
     for key, (raw_dir, preproc_dir) in data_directories.items():

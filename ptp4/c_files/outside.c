@@ -13,6 +13,7 @@
 #error "ENTER SORT USING -DSORT"
 #endif
 
+// Функция для измерения времени сортировки, выбранной в зависимости от выбора пользователя
 double calculate_time(int array[SIZE], size_t n)
 {
     struct timespec start, end;
@@ -34,6 +35,7 @@ double calculate_time(int array[SIZE], size_t n)
     return execution_time_ms;
 }
 
+// Функция для заполнения массива случайными значениями
 int init(int arr[SIZE], size_t n)
 {
     for(size_t i = 0; i < n; i++)
@@ -41,6 +43,7 @@ int init(int arr[SIZE], size_t n)
     return 0;
 }
 
+// Запись измерений
 int main(void)
 {
     int a[SIZE];
