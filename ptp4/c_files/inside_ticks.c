@@ -68,7 +68,7 @@ int main(void)
         mean += calculate_time(temp, SIZE);
     }
     mean /= REPEATS;
-
+    
     // Динамический подсчет RSE
     while (true) {
 

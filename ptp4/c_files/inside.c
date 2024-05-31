@@ -1,4 +1,5 @@
 #include "sort_variations.h"
+// #include "calculation_variations.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -13,6 +14,7 @@
 #ifndef SORT
 #error "ENTER SORT USING -DSORT"
 #endif
+
 
 #define REPEATS 1000
 #define POS_RETURN_CODE 100
@@ -59,7 +61,6 @@ int main(void)
     double std_err = 0.0;
     size_t iterations = 0;
     int temp[SIZE];
-
     // Подсчет среднего значения
     for (size_t i = 0; i < REPEATS; i++)
     {

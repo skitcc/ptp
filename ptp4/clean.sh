@@ -12,7 +12,5 @@ rm -f ./graphs/*
 rm -rf ./apps/apps_inside
 rm -rf ./apps/apps_inside_ticks
 rm -rf ./apps/apps_outside
-rm -rf ./data/inside_data
-rm -rf ./data/inside_ticks_data
-rm -rf ./data/outside_data
-
+rm temp*.txt
+rm *.ex

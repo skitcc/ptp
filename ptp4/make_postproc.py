@@ -1,8 +1,6 @@
 import os
 import matplotlib.pyplot as plt
 
-
-os.makedirs("./graphs", exist_ok=True)
 # Словарь нужных директорий для взятия данных
 directories = {
     'in': './data/inside_data/preproced_data',
@@ -198,7 +196,6 @@ def main():
         
         data_moustache = load_data_moustache(directory)
         plot_moustache(data_moustache, name, key)
-    print("All graphs plotted successfully")
 
 if __name__ == '__main__':
     main()
