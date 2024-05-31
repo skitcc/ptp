@@ -13,4 +13,4 @@ rm -rf ./apps/apps_inside
 rm -rf ./apps/apps_inside_ticks
 rm -rf ./apps/apps_outside
 rm temp*.txt
-rm *.ex
+rm *.exe
