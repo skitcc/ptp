@@ -1,0 +1,9 @@
+#ifndef DEFINITIONS_H
+#define DEFINITIONS_H
+
+#define MAX_LEN_FILENAME 15
+
+#define ERR_OPEN_FILE 1
+#define ERR_ALLOCATION 2
+#define ERR_WRONG_ARGC 3
+#endif
