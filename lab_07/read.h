@@ -9,6 +9,5 @@
 
 short read_quantity(char *filename, size_t *n);
 void fill_array(char *filename, int *pb_src, int *pe_src);
-int allocate_memory(int **start, size_t n);
 
 #endif  

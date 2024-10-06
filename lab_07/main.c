@@ -10,54 +10,73 @@
 int main(int argc, const char *argv[])
 {
     bool need_filter = false;
-    if (check(argc, argv, &need_filter))
-        return 1;
+    int rc = 0;
+
+    if ((rc = check(argc, argv, &need_filter)))
+    {
+        return rc;
+    }
     char filename_in[MAX_LEN_FILENAME + 1] = { 0 };
     char filename_out[MAX_LEN_FILENAME + 1] = { 0 };
-
     strncpy(filename_in, argv[1], MAX_LEN_FILENAME + 1);
     strncpy(filename_out, argv[2], MAX_LEN_FILENAME + 1);
+    // printf("file_in : %s, file_out : %s\n", filename_in, filename_out);
+
 
     size_t quantity = 0;
-    if (read_quantity(filename_in, &quantity))
-        return 1;
-    
-
+    if ((rc = read_quantity(filename_in, &quantity)))
+    {
+        return rc;
+    }
     int *pb_src, *pe_src;
-    if (allocate_memory(&pb_src, quantity))
-        return 1;
 
+    pb_src = malloc(quantity * sizeof(int));
+    if (pb_src == NULL)
+        return ERR_ALLOC_MEM;
 
-    pe_src = pb_src + quantity - 1;
+    pe_src = pb_src + quantity; 
+
     fill_array(filename_in, pb_src, pe_src);
-    int *dest_pe, *dest_pb;
 
+    int *dest_pb, *dest_pe;
 
     if (need_filter)
     {
-        if (key(pb_src, pe_src, &dest_pb, &dest_pe))
-            return 1;
+        rc = key(pb_src, pe_src, &dest_pb, &dest_pe);
+        if (rc != ERR_EMPTY_FILE_AFTER_FILTER && rc)
+        {
+            free(pb_src);
+            free(dest_pb);
+            return rc;
+        }
+        else if (rc == ERR_EMPTY_FILE_AFTER_FILTER)
+            return rc;
     }
     else
     {
-        if (cpy_arr(pb_src, pe_src, &dest_pb, &dest_pe))
-            return 2;
+        if ((rc = cpy_arr(pb_src, pe_src, &dest_pb, &dest_pe)))
+        {
+            free(pb_src);
+            free(dest_pb);
+            return rc;
+        }
     }
-
-    // while (dest_pb <= dest_pe)
+    // int *temp_pb = dest_pb;
+    // printf("main\n");
+    // while (temp_pb < dest_pe)
     // {
-    //     printf("%d ", *dest_pb);
-    //     dest_pb++;
+    //     printf("%d ", *temp_pb);
+    //     temp_pb++;
     // }
-    
-    // printf("here\n");
-    // size_t new_len = dest_pe - dest_pb + 1;
-    // my_sort(dest_pb, new_len, sizeof(int), compare_ints);
-    // printf("here\n");
-    // if (print_to_file(dest_pb, dest_pe, filename_out))
-    //     return 2;
-    // printf("here\n");
-
+    // printf("\n");
+    size_t new_len = dest_pe - dest_pb;
+    my_sort(dest_pb, new_len, sizeof(int), compare_ints);
+    if ((rc = print_to_file(dest_pb, dest_pe, filename_out)))
+    {
+        free(pb_src);
+        free(dest_pb);
+        return rc;
+    }
     free(pb_src);
-    free(dest_pb);
+    free(dest_pb); 
 }

@@ -7,10 +7,10 @@ int print_to_file(const int *pb, const int *pe, char *filename)
     if (f == NULL)
     {
         printf("Ошибка в открытии файла для записи!\n");
-        return 1;
+        return ERR_OPEN_FILE;
     }
 
-    while (pb <= pe)
+    while (pb < pe)
     {
         fprintf(f, "%d ", *pb);
         pb++;
@@ -18,5 +18,5 @@ int print_to_file(const int *pb, const int *pe, char *filename)
     fprintf(f, "\n");
 
     fclose(f);
-    return 0;
+    return EXIT_SUCCESS;
 }

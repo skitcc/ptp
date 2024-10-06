@@ -1,1 +1,1 @@
-./func_tests/data/pos_03_in.txt 100
+./func_tests/data/pos_03_in.txt 1.txt

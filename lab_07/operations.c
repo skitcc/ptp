@@ -6,16 +6,15 @@ int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
     int sum = 0;
     int counter = 0;
 
-    while (start_src <= pe_src)
+    while (start_src < pe_src)
     {
         sum += *start_src;  
         start_src++;
     }
-    
     int temp_sum = sum;
     start_src = pb_src;
 
-    while (start_src < pe_src)
+    while (start_src < pe_src - 1)
     {
         temp_sum -= *start_src;
         if (*start_src > temp_sum)
@@ -24,16 +23,19 @@ int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
         start_src++;
     }
 
+    if (counter == 0)
+        return ERR_EMPTY_FILE_AFTER_FILTER;
+
     *pb_dst = malloc(counter * sizeof(int));
     if (*pb_dst == NULL)
-        return 1;
+        return ERR_ALLOC_MEM;
 
-    *pe_dst = *pb_dst + counter - 1; 
+    *pe_dst = *pb_dst + counter; 
     start_src = pb_src;
     temp_sum = sum;
 
     int *current_dst = *pb_dst;
-    while (pb_src < pe_src)
+    while (pb_src <= pe_src)
     {
         temp_sum -= *pb_src;
         if (*pb_src > temp_sum)
@@ -44,27 +46,26 @@ int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
         pb_src++;
     }
 
-    return 0;
+    return EXIT_SUCCESS;
+
 }
 int cpy_arr(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
 {
     size_t n = pe_src - pb_src;
     *pb_dst = malloc(n * sizeof(int));
     if (pb_dst == NULL)
-        return 1;
+        return ERR_ALLOC_MEM;
     *pe_dst = *pb_dst + n;
 
     int *current_dst = *pb_dst;
-    printf("here\n");
 
-    while (current_dst <= pe_src)
+    while (pb_src < pe_src)
     {
         *current_dst = *pb_src;
-        printf("current : %d\n", *current_dst);
         current_dst++;
         pb_src++;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 void swap(void *a, void *b, size_t size)

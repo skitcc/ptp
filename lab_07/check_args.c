@@ -2,16 +2,24 @@
 
 int check(int argc, const char *argv[], bool *need_filter)
 {
-    if (argc > 4 || argc < 2)
+    if (argc < 3)
     {
-        printf("Неверное кол-во аргументов!\n");
+        printf("Аргументов слишком мало!\n");
+        return ERR_WRONG_ARGC;
+    }
+    if (argc > 4)
+    {
+        printf("Аргументов слишком много!\n");
         return ERR_WRONG_ARGC;
     }
     if (argc == 4)
     {
         if (strcmp(argv[3], "f"))
-            return 1;
+        {
+            printf("Последний параметр должен иметь значение f!\n");
+            return ERR_WRONG_FILTER;
+        }
         *need_filter = true;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }

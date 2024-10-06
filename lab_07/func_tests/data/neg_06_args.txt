@@ -1,1 +1,1 @@
-./func_tests/data/neg_06_in.txt 123
+in.txt out.txt
