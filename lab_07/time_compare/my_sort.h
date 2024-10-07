@@ -1,0 +1,15 @@
+#ifndef MY_SORT_H
+#define MY_SORT_H
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void mysort(void *base, size_t num, size_t size, int (*compare)(const void *, const void *));
+int compare_ints(const void *a, const void *b);
+int compare_doubles(const void *a, const void *b);
+
+
+
+#endif
