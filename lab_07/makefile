@@ -10,10 +10,7 @@ $(shell mkdir -p $(OUT_DIR))
 # Компилятор и флаги
 CC := gcc
 CFLAGS := -std=c99 -Wall -Werror -pedantic -Wextra -Wfloat-equal -Wfloat-conversion -I$(INC_DIR)
-LINKFLAGS := -lcheck -lm -lpthread -lrt
-
-# Флаги для покрытия кода
-COVERAGE_FLAGS := --coverage
+LINKFLAGS := -lcheck -lm
 
 # Исходные файлы и объектные файлы
 SRC := $(wildcard $(SRC_DIR)*.c)
@@ -61,14 +58,6 @@ unit : unit_tests.exe
 
 func : app.exe
 	./func_tests/scripts/func_tests.sh -v
-
-# Генерация покрытия кода
-# coverage: CFLAGS += $(COVERAGE_FLAGS)
-# coverage: LINKFLAGS += $(COVERAGE_FLAGS)
-# coverage: app.exe
-# 	./func_tests/scripts/func_tests.sh -v  # Запуск функциональных тестов
-# 	gcov -o $(OUT_DIR) $(SRC) > $(OUT_DIR)/coverage.txt
-# 	@echo "Отчёт о покрытии кода создан: $(OUT_DIR)/coverage.txt"
 
 # Чистка
 clean:

@@ -18,7 +18,6 @@ short read_quantity(char *filename, size_t *n)
     if (*n == 0)
         return ERR_EMPTY_FILE;
     return (rc == EOF) ? EXIT_SUCCESS : EXIT_FAILURE;
-    
 }
 
 void fill_array(char *filename, int *pb_src, int *pe_src)

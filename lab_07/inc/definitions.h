@@ -10,4 +10,5 @@
 #define ERR_WRONG_FILTER 5
 #define ERR_EMPTY_FILE 6
 #define ERR_EMPTY_FILE_AFTER_FILTER 7
+#define ERR_POINTERS 8
 #endif

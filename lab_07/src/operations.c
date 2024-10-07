@@ -5,6 +5,8 @@ int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
     const int *start_src = pb_src;
     int sum = 0;
     int counter = 0;
+    if (pb_src >= pe_src)
+        return ERR_POINTERS;
 
     while (start_src < pe_src)
     {
@@ -44,10 +46,9 @@ int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
         }
         pb_src++;
     }
-
     return EXIT_SUCCESS;
-
 }
+
 int cpy_arr(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
 {
     size_t n = pe_src - pb_src;

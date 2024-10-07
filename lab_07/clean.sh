@@ -10,3 +10,4 @@ rm -f ./*gcno
 rm -f ./*gcda
 rm -f ./*gcov
 rm -f ./func_tests/scripts/out.tmp
+rm -f ./func_tests/scripts/valgrind_report.txt

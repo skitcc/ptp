@@ -21,7 +21,7 @@ START_TEST(sorted_arrs)
     int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int b[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-    my_sort(a, 10, sizeof(int), compare_ints);
+    mysort(a, 10, sizeof(int), compare_ints);
     int rc = cmp_arr(a, 10, b, 10);
     ck_assert_int_eq(rc, 0);
 }
@@ -32,7 +32,7 @@ START_TEST(rev_sorted)
     int a[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
     int b[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-    my_sort(a, 10, sizeof(int), compare_ints);
+    mysort(a, 10, sizeof(int), compare_ints);
     int rc = cmp_arr(a, 10, b, 10);
     ck_assert_int_eq(rc, 0);
 }
@@ -44,7 +44,7 @@ START_TEST(equal_arrs)
     int a[] = {5, 5, 5, 5, 5};
     int b[] = {5, 5, 5, 5, 5};
 
-    my_sort(a, 5, sizeof(int), compare_ints);
+    mysort(a, 5, sizeof(int), compare_ints);
     int rc = cmp_arr(a, 5, b, 5);
     ck_assert_int_eq(rc, 0);
 }
@@ -54,7 +54,7 @@ START_TEST(random_pos)
 {
     int a[] = {5, 2, 3, 4, 1};
     int b[] = {1, 2, 3, 4, 5};
-    my_sort(a, 5, sizeof(int), compare_ints);
+    mysort(a, 5, sizeof(int), compare_ints);
     int rc = cmp_arr(a, 5, b, 5);
     ck_assert_int_eq(rc, 0);
 }
@@ -64,11 +64,23 @@ START_TEST(arr_len_1)
     int a[] = {5};
     int b[] = {5};
 
-    my_sort(a, 1, sizeof(int), compare_ints);
+    mysort(a, 1, sizeof(int), compare_ints);
     int rc = cmp_arr(a, 1, b, 1);
     ck_assert_int_eq(rc, 0);
 }
 END_TEST
+
+START_TEST(empty_array)
+{
+    int *a = NULL; 
+    int *b = NULL;
+
+    mysort(a, 0, sizeof(int), compare_ints);
+    ck_assert_ptr_eq(a, b);
+}
+END_TEST
+
+
 
 
 Suite *my_sort_suite(void)
@@ -82,6 +94,7 @@ Suite *my_sort_suite(void)
     tcase_add_test(tc_pos, equal_arrs);
     tcase_add_test(tc_pos, random_pos);
     tcase_add_test(tc_pos, arr_len_1);
+    tcase_add_test(tc_pos, empty_array);
     suite_add_tcase(s, tc_pos);
 
     return s;

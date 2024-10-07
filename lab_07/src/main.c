@@ -48,7 +48,10 @@ int main(int argc, const char *argv[])
             return rc;
         }
         else if (rc == ERR_EMPTY_FILE_AFTER_FILTER)
+        {
+            free(pb_src);
             return rc;
+        }
     }
     else
     {
@@ -60,7 +63,7 @@ int main(int argc, const char *argv[])
         }
     }
     size_t new_len = dest_pe - dest_pb;
-    my_sort(dest_pb, new_len, sizeof(int), compare_ints);
+    mysort(dest_pb, new_len, sizeof(int), compare_ints);
     if ((rc = print_to_file(dest_pb, dest_pe, filename_out)))
     {
         free(pb_src);
