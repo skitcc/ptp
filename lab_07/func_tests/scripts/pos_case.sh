@@ -38,7 +38,7 @@ if [ "$filename1" != "$filename2" ]; then
 fi
 
 compare_files() {
-    if "$working_dir/comparator.sh" "out.tmp" "$file_stream_out_expected"; then
+    if "$working_dir/comparator.sh" "1.txt" "$file_stream_out_expected"; then
         exit 0
     else
         exit 1

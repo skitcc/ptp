@@ -7,8 +7,9 @@ file2="$2"
 
 
 if [ -f "$file1" ] && [ -f "$file2" ]; then
-    grep -E "" "$file1" > "$SCRIPT_DIR/file_new_1.txt"
-    grep -E "" "$file2" > "$SCRIPT_DIR/file_new_2.txt"
+
+    sed -e 's/\r$//' "$file1" | tr -s '[:space:]' ' ' | sed 's/ *$//' > "$SCRIPT_DIR/file_new_1.txt"
+    sed -e 's/\r$//' "$file2" | tr -s '[:space:]' ' ' | sed 's/ *$//' > "$SCRIPT_DIR/file_new_2.txt"
 
     if diff "$SCRIPT_DIR/file_new_1.txt" "$SCRIPT_DIR/file_new_2.txt"; then
         exit 0
