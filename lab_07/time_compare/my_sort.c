@@ -20,13 +20,6 @@ int compare_ints(const void *a, const void *b)
     return (int_a > int_b) - (int_a < int_b);
 }
 
-int compare_doubles(const void *a, const void *b)
-{
-    double double_a = *(const double *)a;
-    double double_b = *(const double *)b;
-    return (double_a > double_b) - (double_a < double_b);
-}
-
 void mysort(void *base, size_t num, size_t size, int (*compare)(const void *, const void *))
 {
     if (num == 0)

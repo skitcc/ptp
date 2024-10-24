@@ -5,6 +5,8 @@
 #include <time.h>
 #include "my_sort.h"  // Ваша реализация mysort
 
+#define N 10000
+
 #define GHZ 2.1  // Частота процессора в GHz
 
 uint64_t tick_count(void)
@@ -55,8 +57,13 @@ void sort_descending(void *array, size_t size, size_t element_size, int (*compar
 
 int main(void)
 {
-    size_t sizes[] = {10, 25, 50, 100, 250, 500, 1000}; // Различные размеры массивов
-    size_t num_sizes = sizeof(sizes) / sizeof(sizes[0]);
+    size_t sizes[N]; // Различные размеры массивов
+    int c = 0;
+    for (size_t i = 25; i < 1000; i+=25)
+    {
+        sizes[c++] = i;
+    }
+    size_t num_sizes = c;
 
     srand(time(NULL)); // Инициализация генератора случайных чисел
 

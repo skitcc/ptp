@@ -1,0 +1,1 @@
+a ./func_tests/data/neg_01_in.txt ./func_tests/data/neg_01_in.txt res.txt 1 2 3

@@ -16,6 +16,14 @@ int cmp_arr(const int *arr1, size_t size1, const int *arr2, size_t size2)
 }
 
 
+int compare_doubles(const void *a, const void *b)
+{
+    double double_a = *(const double *)a;
+    double double_b = *(const double *)b;
+    return (double_a > double_b) - (double_a < double_b);
+}
+
+
 START_TEST(sorted_arrs)
 {
     int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};

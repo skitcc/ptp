@@ -1,0 +1,1 @@
+m ./func_tests/data/neg_14_in.txt ./func_tests/data/neg_14_in1.txt res.txt 
