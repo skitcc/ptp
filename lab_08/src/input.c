@@ -36,7 +36,6 @@ double **input_matrix(char *filename)
     {
         data[i] = 0.0;
     }
-    // printf("nnz = %d\n", nnz);
     for (int i = 0; i < nnz; i++)
     {
         int row = 0, column = 0;
@@ -49,7 +48,6 @@ double **input_matrix(char *filename)
         }
         row--;
         column--;
-        // printf("row : %d, col : %d, value : %lf\n", row, column, value);
         if (row < 0 || column < 0 || fabs(value - 0.0) < EPS || row >= n || column >= m)
         {
             free(a);
@@ -69,8 +67,9 @@ int print_matrix_to_file(double **matrix, int n, int m, const char *file)
         return 2;
     FILE *f = fopen(file, "w");
     if (f == NULL)
+    {
         return 1;
-
+    }
     int nnz = 0;
     for (int i = 0; i < n; i++)
     {

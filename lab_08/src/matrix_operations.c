@@ -1,9 +1,5 @@
 #include "matrix_operations.h"
 
-
-#include "matrix_operations.h"
-#include <stdlib.h>
-
 int add(matrix_data_t *matrix_a, matrix_data_t *matrix_b, result_data_t *result)
 {
     if (matrix_a->rows != matrix_b->rows || matrix_a->cols != matrix_b->cols)
