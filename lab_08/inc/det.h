@@ -8,6 +8,6 @@
 #include <stdlib.h>
 
 
-int count_determinant(int **matrix, int n, int *error_code);
-int **allocate_minor(int size);
+double count_determinant(double **matrix, int n, int *error_code);
+double **allocate_minor(int size);
 #endif

@@ -3,7 +3,7 @@
 
 typedef struct 
 {
-    int **matrix;
+    double **matrix;
     int rows;
     int cols;
     int nnz;
@@ -11,7 +11,7 @@ typedef struct
 
 typedef struct
 {
-    int **matrix;
+    double **matrix;
     int rows;
     int cols;
 } result_data_t;

@@ -10,6 +10,7 @@ int add(matrix_data_t *matrix_a, matrix_data_t *matrix_b, result_data_t *result)
     {
         free(matrix_a->matrix);
         free(matrix_b->matrix);
+        result->matrix = NULL;
         return ERR_ADD_SIZES;
     }
 
@@ -19,11 +20,11 @@ int add(matrix_data_t *matrix_a, matrix_data_t *matrix_b, result_data_t *result)
     result->rows = rows;
     result->cols = cols;
 
-    result->matrix = malloc(rows * sizeof(int *) + rows * cols * sizeof(int));
+    result->matrix = malloc(rows * sizeof(double *) + rows * cols * sizeof(double));
     if (!result->matrix)
         return ERR_ALLOCATION;
 
-    int *data = (int *)(result->matrix + rows);
+    double *data = (double *)(result->matrix + rows);
     for (int i = 0; i < rows; i++)
     {
         result->matrix[i] = data + i * cols;
@@ -46,7 +47,7 @@ int multiply(matrix_data_t *matrix_a, matrix_data_t *matrix_b, result_data_t *re
 {
     if (matrix_a->cols != matrix_b->rows)
     {
-  
+        result->matrix = NULL;
         return ERR_MUL_SIZES;
     }
 
@@ -56,12 +57,12 @@ int multiply(matrix_data_t *matrix_a, matrix_data_t *matrix_b, result_data_t *re
     result->rows = rows;
     result->cols = cols;
 
-    result->matrix = malloc(rows * sizeof(int *) + rows * cols * sizeof(int));
+    result->matrix = malloc(rows * sizeof(double *) + rows * cols * sizeof(double));
     if (!result->matrix)
         return ERR_ALLOCATION;
 
     
-    int *data = (int *)(result->matrix + rows);
+    double *data = (double *)(result->matrix + rows);
     for (int i = 0; i < rows; i++)
     {
         result->matrix[i] = data + i * cols;

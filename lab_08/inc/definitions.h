@@ -3,6 +3,7 @@
 
 
 #define MAX_LEN_FILENAME 50
+#define EPS 1e-7
 
 #define ERR_INPUT 1
 #define ERR_SIZE 2

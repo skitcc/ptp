@@ -1,18 +1,8 @@
 #include "input.h"
 
-
-
-FILE *validate_file(char *filename)
+double **input_matrix(char *filename)
 {
-    FILE *f = fopen(filename, "r");
-    if (f == NULL)
-        return NULL;
-    return f;
-}
-
-int **input_matrix(char *filename)
-{
-    FILE *in_file = validate_file(filename);
+    FILE *in_file = fopen(filename, "r");
     if (in_file == NULL)
         return NULL;
 
@@ -25,16 +15,18 @@ int **input_matrix(char *filename)
     }
 
     if (n <= 0 || m <= 0 || nnz < 0)
+    {
+        fclose(in_file);
         return NULL;
-
-    int **a = malloc(n * sizeof(int *) + n * m * sizeof(int));
+    }
+    double **a = malloc(n * sizeof(double *) + n * m * sizeof(double));
     if (a == NULL)
     {
         fclose(in_file);
         return NULL;
     }
 
-    int *data = (int *)(a + n); 
+    double *data = (double *)(a + n); 
     for (int i = 0; i < n; i++)
     {
         a[i] = data + i * m;    
@@ -42,21 +34,25 @@ int **input_matrix(char *filename)
 
     for (int i = 0; i < n * m; i++)
     {
-        data[i] = 0;
+        data[i] = 0.0;
     }
-
-    
+    // printf("nnz = %d\n", nnz);
     for (int i = 0; i < nnz; i++)
     {
-        int row, column, value;
-        if (fscanf(in_file, "%d%d%d", &row, &column, &value) != 3)
+        int row = 0, column = 0;
+        double value = 0.0;
+        if (fscanf(in_file, "%d%d%lf", &row, &column, &value) != 3)
         {
+            free(a);
             fclose(in_file);
             return NULL;
         }
-
-        if (row < 0 || column < 0 || value < 0 || row >= n || column >= m)
+        row--;
+        column--;
+        // printf("row : %d, col : %d, value : %lf\n", row, column, value);
+        if (row < 0 || column < 0 || fabs(value - 0.0) < EPS || row >= n || column >= m)
         {
+            free(a);
             fclose(in_file);
             return NULL;
         }
@@ -67,33 +63,52 @@ int **input_matrix(char *filename)
     return a;
 }
 
-void print_matrix_to_file(int **matrix, int n, int m, char *file) 
+int print_matrix_to_file(double **matrix, int n, int m, const char *file) 
 {
+    if (matrix == NULL)
+        return 2;
     FILE *f = fopen(file, "w");
     if (f == NULL)
-        return;
-    
+        return 1;
+
+    int nnz = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (fabs(matrix[i][j] - 0.0) > EPS)
+                nnz++;
+        }
+    }
+
+    fprintf(f, "%d %d %d\n", n, m, nnz);
     for (int i = 0; i < n; i++)
     { 
         for (int j = 0; j < m; j++) 
-            fprintf(f, "%d ", matrix[i][j]);
-        
-        fprintf(f, "\n");
+        {
+            if (fabs(matrix[i][j] - 0.0) > EPS)
+            {
+                fprintf(f, "%d %d %lf", i + 1, j + 1, matrix[i][j]);
+                fprintf(f, "\n");
+            }
+        }
     }
     fclose(f);
+    return 0;
 }
 
-void print_matrix(int **matrix, int n, int m) 
+void print_matrix(double **matrix, int n, int m) 
 {
-
     for (int i = 0; i < n; i++)
     { 
         for (int j = 0; j < m; j++) 
-            fprintf(stdout, "%d ", matrix[i][j]);
+            fprintf(stdout, "%lf ", matrix[i][j]);
         
         fprintf(stdout, "\n");
     }
 }
+
+
 
 
 

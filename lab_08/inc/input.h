@@ -5,11 +5,12 @@
 #include "definitions.h"
 #include "input.h"
 #include "structs.h"
+#include "math.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-int **input_matrix(char *filename);
-void print_matrix_to_file(int **matrix, int n, int m, char *file);
-void print_matrix(int **matrix, int n, int m);
+double **input_matrix(char *filename);
+int print_matrix_to_file(double **matrix, int n, int m, const char *file); 
+void print_matrix(double **matrix, int n, int m);
 
 #endif

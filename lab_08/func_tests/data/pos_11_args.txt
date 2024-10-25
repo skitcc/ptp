@@ -1,1 +1,1 @@
-o ./func_tests/data/pos_11_in.txt res.txt 
+o ./func_tests/data/pos_11_in.txt res.txt

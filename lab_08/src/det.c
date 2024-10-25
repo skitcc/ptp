@@ -1,15 +1,13 @@
 #include "det.h"
 
-int **allocate_minor(int size)
+double **allocate_minor(int size)
 {
-    // Выделяем память для указателей на строки и самих данных
-    int **minor = malloc(size * sizeof(int *) + size * size * sizeof(int));
+    double **minor = malloc(size * sizeof(double *) + size * size * sizeof(double));
 
     if (minor == NULL)
         return NULL;
 
-    // Указатель на начало данных
-    int *data = (int *)(minor + size); 
+    double *data = (double *)(minor + size); 
 
     for (int i = 0; i < size; i++)
     {
@@ -19,7 +17,7 @@ int **allocate_minor(int size)
     return minor;
 }
 
-void fill_minor(int **matrix, int **minor, int n, int current_col)
+void fill_minor(double **matrix, double **minor, int n, int current_col)
 {
     for (int i = 1; i < n; i++)
     {
@@ -34,17 +32,17 @@ void fill_minor(int **matrix, int **minor, int n, int current_col)
     }
 }
 
-int count_determinant(int **matrix, int n, int *error_code)
+double count_determinant(double **matrix, int n, int *error_code)
 {
     if (n == 1)
         return matrix[0][0];
     if (n == 2)
         return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
 
-    int det = 0;
+    double det = 0;
     int sign = 1;
 
-    int **minor = allocate_minor(n - 1);
+    double **minor = allocate_minor(n - 1);
 
     if (minor == NULL)
     {

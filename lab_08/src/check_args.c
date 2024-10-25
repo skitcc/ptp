@@ -3,7 +3,7 @@
 
 int check(int argc, char *argv[])
 {
-    if (argc > 5 || argc < 3)
+    if (argc > 5 || argc <= 3)
         return 1;
     
     char action = '-';

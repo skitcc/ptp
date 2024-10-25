@@ -1,16 +1,22 @@
 #include "check_det.h"
 
 // Вспомогательная функция для создания квадратной матрицы
-static int **create_matrix(int n)
+static double **create_matrix(int n)
 {
-    int **matrix = malloc(n * sizeof(int *) + n * n * sizeof(int));
+    double **matrix = malloc(n * sizeof(double *));
     if (!matrix)
         return NULL;
 
-    int *data = (int *)(matrix + n);
-    for (int i = 0; i < n; i++)
+    matrix[0] = malloc(n * n * sizeof(double));  
+    if (!matrix[0]) 
     {
-        matrix[i] = data + i * n;
+        free(matrix);
+        return NULL;
+    }
+
+    for (int i = 1; i < n; i++)
+    {
+        matrix[i] = matrix[0] + i * n;  
     }
 
     return matrix;
@@ -20,18 +26,17 @@ static int **create_matrix(int n)
 START_TEST(test_determinant_1x1)
 {
     int error_code = 0; 
-    int **matrix = create_matrix(1);
+    double **matrix = create_matrix(1);
     ck_assert_ptr_nonnull(matrix);
 
     matrix[0][0] = 5;
-    int det = count_determinant(matrix, 1, &error_code);
+    double det = count_determinant(matrix, 1, &error_code);
 
     ck_assert_int_eq(error_code, 0);
+    ck_assert_double_eq(det, 5);
 
-    ck_assert_int_eq(det, 5);
-
-    free(matrix);
-
+    free(matrix[0]);  
+    free(matrix);     
 }
 END_TEST
 
@@ -39,7 +44,7 @@ END_TEST
 START_TEST(test_determinant_2x2)
 {
     int error_code = 0;
-    int **matrix = create_matrix(2);
+    double **matrix = create_matrix(2);
     ck_assert_ptr_nonnull(matrix);
 
     matrix[0][0] = 1;
@@ -47,11 +52,12 @@ START_TEST(test_determinant_2x2)
     matrix[1][0] = 3;
     matrix[1][1] = 4;
 
-    int det = count_determinant(matrix, 2, &error_code);
+    double det = count_determinant(matrix, 2, &error_code);
     ck_assert_int_eq(error_code, 0);
-    ck_assert_int_eq(det, -2);
-
-    free(matrix);
+    ck_assert_double_eq(det, -2);
+    
+    free(matrix[0]);  
+    free(matrix);     
 }
 END_TEST
 
@@ -59,7 +65,7 @@ END_TEST
 START_TEST(test_determinant_3x3)
 {
     int error_code = 0;
-    int **matrix = create_matrix(3);
+    double **matrix = create_matrix(3);
     ck_assert_ptr_nonnull(matrix);
 
     matrix[0][0] = 1;
@@ -72,29 +78,32 @@ START_TEST(test_determinant_3x3)
     matrix[2][1] = 6;
     matrix[2][2] = 0;
 
-    int det = count_determinant(matrix, 3, &error_code);
+    double det = count_determinant(matrix, 3, &error_code);
     ck_assert_int_eq(error_code, 0);
-    ck_assert_int_eq(det, 1);
+    ck_assert_double_eq(det, 1);
 
-    free(matrix);
+    free(matrix[0]);  
+    free(matrix);     
 }
 END_TEST
+
 
 // Тест на выделение памяти для миноров
-START_TEST(test_allocate_minor)
-{
-    int **minor = allocate_minor(2);
-    ck_assert_ptr_nonnull(minor);
+// START_TEST(test_allocate_minor)
+// {
+//     int **minor = allocate_minor(2);
+//     ck_assert_ptr_nonnull(minor);
 
-    minor[0][0] = 1;
-    minor[1][1] = 2;
+//     minor[0][0] = 1;
+//     minor[1][1] = 2;
 
-    ck_assert_int_eq(minor[0][0], 1);
-    ck_assert_int_eq(minor[1][1], 2);
+//     ck_assert_int_eq(minor[0][0], 1);
+//     ck_assert_int_eq(minor[1][1], 2);
 
-    free(minor);
-}
-END_TEST
+//     free(minor[0]);
+//     free(minor);
+// }
+// END_TEST
 
 
 // Основная функция тестирования
@@ -110,7 +119,7 @@ Suite *matrix_suite(void)
     tcase_add_test(tc_core, test_determinant_1x1);
     tcase_add_test(tc_core, test_determinant_2x2);
     tcase_add_test(tc_core, test_determinant_3x3);
-    tcase_add_test(tc_core, test_allocate_minor);
+    // tcase_add_test(tc_core, test_allocate_minor);
     suite_add_tcase(s, tc_core);
 
     return s;

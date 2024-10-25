@@ -9,4 +9,4 @@ mkdir -p ./out
 
 clang -fsanitize=address -fno-omit-frame-pointer -std=c99 -Wall -Werror -Wpedantic -Wextra -Wvla -Wfloat-conversion -Wfloat-equal -g -I./inc -c ./src/*.c -o ./out/
 
-clang ./out/*.o -o app.exe -lm -fsanitize=address
+clang ./*.o -o app.exe -lm -fsanitize=address
