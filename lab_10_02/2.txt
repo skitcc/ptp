@@ -1,0 +1,7 @@
+age : 8, course : 8, name : dagestan
+age : 7, course : 7, name : sui
+age : 4, course : 4, name : Alah
+age : 5, course : 6, name : PPP
+age : 4, course : 5, name : Zov
+age : 2, course : 3, name : Mixa
+age : 1, course : 2, name : zalupa

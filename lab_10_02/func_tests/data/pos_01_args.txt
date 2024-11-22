@@ -1,0 +1,1 @@
+./func_tests/data/pos_01_1.txt res.txt 1

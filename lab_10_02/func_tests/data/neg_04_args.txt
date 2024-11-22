@@ -1,0 +1,1 @@
+./func_tests/data/neg_04_1.txt res.txt 1
