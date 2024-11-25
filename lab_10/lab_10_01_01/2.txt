@@ -1,0 +1,2 @@
+age : 3, course : 4, name : Ivan
+age : 1, course : 6, name : Mixa
