@@ -8,10 +8,10 @@
  *
  * Ключ не может быть пустой строкой.
  */
-typedef struct assoc_array_type* assoc_array_t;
+typedef struct assoc_array_type*assoc_array_t;
 
 
-typedef enum _error
+typedef enum error
 {
     /// При выполнении действия ошибок не возникло
     ASSOC_ARRAY_OK = 0,
@@ -23,7 +23,6 @@ typedef enum _error
     ASSOC_ARRAY_NOT_FOUND,
     /// Значение с таким ключом уже в массиве
     ASSOC_ARRAY_KEY_EXISTS,
-
 } assoc_array_error_t;
 
 
@@ -130,4 +129,3 @@ assoc_array_error_t assoc_array_max(const assoc_array_t arr, int **num);
 
 
 #endif
-

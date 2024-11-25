@@ -21,6 +21,8 @@ void print_list(list_t *head)
 
 void free_list(list_t *head)
 {
+    if (!head) 
+        return;
     while (head) 
     {
         list_t *temp = head;

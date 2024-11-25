@@ -5,7 +5,7 @@ LDFLAGS = -lcheck -lm
 
 # Общие директории и цели
 COMMON_DIR = ../lab_10_03_common
-TARGET = app.exe
+TARGET = unit_tests.exe
 
 # Исходники
 SRCS = associative_array_impl_1.c check_main.c check_create_destroy.c check_clear.c check_remove.c check_each.c check_insert.c check_min_max.c

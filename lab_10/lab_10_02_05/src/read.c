@@ -17,8 +17,9 @@ int read_str_to_list(const char *str, list_t **head)
 {
     size_t len = strlen(str);
     if (len == 0)
+    {
         return 1;
-
+    }
     list_t *tail = NULL;
     for (size_t i = 0; i < len; i += PART_SIZE) 
     {
@@ -26,6 +27,7 @@ int read_str_to_list(const char *str, list_t **head)
         if (create_node(&new_node)) 
         {
             free_list(*head);
+            *head = NULL;
             return 1;
         }
         memset(new_node->part, '\0', PART_SIZE);

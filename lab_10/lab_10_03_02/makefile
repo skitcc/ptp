@@ -3,13 +3,11 @@ CFLAGS = -Wall -Werror -g
 LDFLAGS = -lcheck -lm
 
 COMMON_DIR = ../lab_10_03_common
-TARGET = app.exe
+TARGET = unit_tests.exe
 
-# Исходники
 SRCS = associative_array_impl_2.c check_main.c check_create_destroy.c check_clear.c check_remove.c check_each.c check_insert.c check_min_max.c
 OBJS = $(SRCS:.c=.o)
 
-# Компиляция основного приложения
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
@@ -18,6 +16,5 @@ $(TARGET): $(OBJS)
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Очистка временных файлов
 clean:
 	rm -f *.o $(TARGET)

@@ -29,12 +29,14 @@ int main(void)
 
         if (getline(&input_str1, &n, stdin) == -1)
         {
+            free(input_str1);
             return 1;
         }
 
         if (getline(&input_str2, &n, stdin) == -1)
         {
             free(input_str1);
+            free(input_str2);
             return 2;
         }
 
@@ -61,7 +63,6 @@ int main(void)
         {
             free(input_str1);
             free(input_str2);
-            free_list(head1); 
             return 1;
         }
         if (read_str_to_list(input_str2, &head2) != 0)
@@ -69,7 +70,7 @@ int main(void)
             free(input_str1);
             free(input_str2);
             free_list(head1);
-            free_list(head2);
+            head1 = NULL;
             return 2;
         }
 
@@ -78,14 +79,13 @@ int main(void)
         {
             free(input_str1);
             free(input_str2);
-            free_list(head1);
-            free_list(head2);
             return 3;
         }
         print_list(head);
         free(input_str1);
         free(input_str2);
         free_list(head);
+        head = NULL;
         return 0;
     }
     else if (strcmp(option, "sps") == 0)
@@ -113,7 +113,6 @@ int main(void)
         }
         if (read_str_to_list(input_str, &head) != 0)
         {
-            free(head);
             free(input_str);
             return 3;
         }
@@ -124,10 +123,12 @@ int main(void)
         {
             free(input_str);
             free_list(head);
+            head = NULL;
             return 4;
         }
         print_list(head);
         free_list(head);
+        head = NULL;
         free(input_str);
         return 0;
     }
@@ -172,7 +173,6 @@ int main(void)
         {
             free(input_str);
             free(substring);
-            free_list(head);
             return 3;
         }
 
@@ -181,7 +181,7 @@ int main(void)
             free(input_str);
             free(substring);
             free_list(head);
-            free_list(head1);
+            head = NULL;
             return 4;
         }
 
@@ -193,6 +193,8 @@ int main(void)
         free_list(head1);
         free(substring);
         free(input_str);
+        head = NULL;
+        head1 = NULL;
         return 0;
     }
     else if (strcmp(option, "out") == 0)
@@ -203,9 +205,7 @@ int main(void)
         {
             free(input_str);
             return 1;
-        } 
-
-
+        }
         size_t len = strlen(input_str);
 
         if (len > 0 && input_str[len - 1] == '\n')
@@ -216,16 +216,17 @@ int main(void)
         if (read_str_to_list(input_str, &head) != 0)
         {
             free(input_str);
-            free_list(head);
             return 1;
         }
         print_list(head);
         free(input_str);
         free_list(head);
+        head = NULL;
     }
     else
     {
         free_list(head);
+        head = NULL;
         return 2;
     }
 }

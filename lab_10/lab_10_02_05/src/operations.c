@@ -28,6 +28,8 @@ list_t *concatenate(list_t *str1, list_t *str2)
                 {
                     free_list(str1);
                     free_list(str2);
+                    str1 = NULL;
+                    str2 = NULL;
                     return NULL;
                 }
                 current->next = new_node;
@@ -49,6 +51,8 @@ list_t *concatenate(list_t *str1, list_t *str2)
         {
             free_list(str1);
             free_list(str2);
+            str1 = NULL;
+            str2 = NULL;
             return NULL;
         }
         current->next = new_node;
@@ -56,6 +60,7 @@ list_t *concatenate(list_t *str1, list_t *str2)
     }
 
     free_list(str2);
+    str2 = NULL;
     return str1;
 }
 
@@ -99,25 +104,25 @@ int collapse_spaces(list_t *head)
 int find_substring(list_t *head, list_t *sub_head)
 {
     if (!head || !sub_head)
-    {
         return -1; 
-    }
 
-    list_t *h_cur = head;     
-    list_t *n_cur = sub_head; 
-    int h_index = 0;          
-    int match_index = -1;     
-    int h_pos = 0;            
-    int n_pos = 0;            
+    int h_index = 0;             
+    int match_index = -1;        
+    size_t h_pos = 0, n_pos = 0;
+    const list_t *h_cur = head;
+    const list_t *n_cur = sub_head;
 
-    while (h_cur)
+    while (h_cur) 
     {
-        if (h_cur->part[h_pos] == n_cur->part[n_pos])
+        if (h_cur->part[h_pos] == n_cur->part[n_pos]) 
         {
-            if (match_index == -1) 
-                match_index = h_index;            
+            if (match_index == -1)
+                match_index = h_index;
+
             n_pos++;
-            if (n_cur->part[n_pos] == '\0' || n_pos == PART_SIZE) 
+            h_pos++;
+
+            if (n_pos == PART_SIZE || n_cur->part[n_pos] == '\0') 
             {
                 n_cur = n_cur->next;
                 n_pos = 0;
@@ -125,35 +130,43 @@ int find_substring(list_t *head, list_t *sub_head)
 
             if (!n_cur)
                 return match_index;
-        }
-        else
-        {
-            if (match_index != -1)
-            {
-               
-                h_pos = (match_index + 1) % PART_SIZE;
-                h_index = match_index + 1;
-                h_cur = head;
-                for (int i = 0; i < h_index / PART_SIZE; i++)
-                    h_cur = h_cur->next;
 
-                match_index = -1;
+            if (h_pos == PART_SIZE || h_cur->part[h_pos] == '\0') 
+            {
+                h_cur = h_cur->next;
+                h_pos = 0;
+            }
+        } 
+        else 
+        {
+            if (match_index != -1) 
+            {
+                h_index = match_index + 1; 
+                match_index = -1; 
                 n_cur = sub_head;
                 n_pos = 0;
-                continue; 
-            }
-        }
-        h_pos++;
-        h_index++;
 
-        if (h_pos == PART_SIZE || h_cur->part[h_pos] == '\0')
-        {
-            h_cur = h_cur->next;
-            h_pos = 0;
+                h_cur = head;
+                h_pos = h_index % PART_SIZE;
+                for (int i = 0; i < h_index / PART_SIZE; i++)
+                    h_cur = h_cur->next;
+            } 
+            else 
+            {
+                h_pos++;
+                h_index++;
+
+                if (h_pos == PART_SIZE || h_cur->part[h_pos] == '\0') 
+                {
+                    h_cur = h_cur->next;
+                    h_pos = 0;
+                }
+            }
         }
     }
 
     return -1;
 }
+
 
 
