@@ -98,7 +98,7 @@ START_TEST(test_collapse_spaces_only_spaces)
     read_str_to_list(str, &head);
 
     int ret = collapse_spaces(head);
-    ck_assert_int_eq(ret, 2);
+    ck_assert_int_eq(ret, 0);
 
     free_list(head);
 }

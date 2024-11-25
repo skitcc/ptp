@@ -6,11 +6,17 @@ void print_list(list_t *head)
     list_t *current = head;
     while (current != NULL)
     {
-        printf("%s", current->part);
+        for (size_t i = 0; i < PART_SIZE; i++) 
+        {
+            if (current->part[i] == '\0') 
+                break;
+            putchar(current->part[i]);
+        }
         current = current->next;
     }
-    printf("\n");
+    putchar('\n');
 }
+
 
 
 void free_list(list_t *head)

@@ -12,7 +12,6 @@
 
 int main(void)
 {
-
     char option[10];
     if (fgets(option, sizeof(option), stdin) == NULL)
         return 1;
@@ -39,13 +38,22 @@ int main(void)
             return 2;
         }
 
-        // if (input_str1[strlen(input_str1) - 1] == '\n')
-        input_str1[strlen(input_str1) - 1] = '\0';
-        // if (input_str2[strlen(input_str2) - 1] == '\n')
-        input_str2[strlen(input_str2) - 1] = '\0';
-        // printf("%s\n", input_str1);
-        // printf("%s\n", input_str2);
+        size_t len1 = 0, len2 = 0;
+        len1 = strlen(input_str1);
+        len2 = strlen(input_str2);
 
+        if (input_str1[len1 - 1] == '\n')
+            input_str1[len1 - 1] = '\0';
+        if (input_str2[len2 - 1] == '\n')
+            input_str2[len2 - 1] = '\0';
+
+
+        if (strlen(input_str1) == 0 || strlen(input_str2) == 0)
+        {
+            free(input_str1);
+            free(input_str2);
+            return 1;
+        }
         list_t *head1 = NULL;
         list_t *head2 = NULL;
 
@@ -56,7 +64,6 @@ int main(void)
             free_list(head1); 
             return 1;
         }
-
         if (read_str_to_list(input_str2, &head2) != 0)
         {
             free(input_str1);
@@ -75,15 +82,12 @@ int main(void)
             free_list(head2);
             return 3;
         }
-
         print_list(head);
-
         free(input_str1);
         free(input_str2);
         free_list(head);
         return 0;
     }
-
     else if (strcmp(option, "sps") == 0)
     {
         char *input_str = NULL;
@@ -91,7 +95,15 @@ int main(void)
 
         if (getline(&input_str, &n, stdin) == -1)
         {
+            free(input_str);
             return 1;
+        }
+
+        size_t len = strlen(input_str);
+
+        if (len > 0 && input_str[len - 1] == '\n')
+        {
+            input_str[len - 1] = '\0';
         }
 
         if (strlen(input_str) == 0)
@@ -99,10 +111,9 @@ int main(void)
             free(input_str);
             return 2;
         }
-
-        input_str[strlen(input_str) - 1] = '\0';
         if (read_str_to_list(input_str, &head) != 0)
         {
+            free(head);
             free(input_str);
             return 3;
         }
@@ -110,14 +121,15 @@ int main(void)
         int rc = collapse_spaces(head);
 
         if (rc != 0)
+        {
+            free(input_str);
+            free_list(head);
             return 4;
-
+        }
         print_list(head);
         free_list(head);
         free(input_str);
         return 0;
-
-
     }
     else if (strcmp(option, "pos") == 0)
     {
@@ -127,44 +139,54 @@ int main(void)
 
         if (getline(&input_str, &n, stdin) == -1)
         {
+            free(input_str);
             return 1;
-        }  
-        input_str[strlen(input_str) - 1] = '\0';
+        }
+
+        size_t len1 = strlen(input_str);
+        if (len1 > 0 && input_str[len1 - 1] == '\n')
+        {
+            input_str[len1 - 1] = '\0';
+        }
 
         char *substring = NULL;
         if (getline(&substring, &n, stdin) == -1)
         {
+            free(substring);
             free(input_str);
-            return 1;
-        }  
-        substring[strlen(substring) - 1] = '\0';
-        if (strlen(substring) == 0)
             return 2;
+        }
+        size_t len = strlen(substring);
+        if (len > 0 && substring[len - 1] == '\n')
+        {
+            substring[len - 1] = '\0';
+        }
 
+        if (strlen(input_str) == 0 || strlen(substring) == 0)
+        {
+            free(input_str);
+            free(substring);
+            return 2;
+        }
         if (read_str_to_list(input_str, &head) != 0)
         {
             free(input_str);
             free(substring);
-            return 1;
+            free_list(head);
+            return 3;
         }
 
         if (read_str_to_list(substring, &head1) != 0)
         {
             free(input_str);
             free(substring);
-            return 1;
+            free_list(head);
+            free_list(head1);
+            return 4;
         }
 
 
         int result = find_substring(head, head1);
-        if (result == -1)
-        {
-            free(input_str);
-            free(substring);
-            free_list(head1);
-            free_list(head);
-            return 1;
-        }
 
         printf("%d\n", result);
         free_list(head);
@@ -172,8 +194,34 @@ int main(void)
         free(substring);
         free(input_str);
         return 0;
+    }
+    else if (strcmp(option, "out") == 0)
+    {
+        char *input_str = NULL;
+        size_t n = 0;
+        if (getline(&input_str, &n, stdin) == -1)
+        {
+            free(input_str);
+            return 1;
+        } 
 
 
+        size_t len = strlen(input_str);
+
+        if (len > 0 && input_str[len - 1] == '\n')
+        {
+            input_str[len - 1] = '\0';
+        }
+
+        if (read_str_to_list(input_str, &head) != 0)
+        {
+            free(input_str);
+            free_list(head);
+            return 1;
+        }
+        print_list(head);
+        free(input_str);
+        free_list(head);
     }
     else
     {

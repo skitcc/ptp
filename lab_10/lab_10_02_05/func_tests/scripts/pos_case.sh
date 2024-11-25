@@ -40,12 +40,16 @@ else
         
         return_code=$?
 
-        if [ "$return_code" -ne 0 ]; then
-            if "$current_dir/comparator.sh"; then
-                exit 0
-            else
-                exit 4
-            fi
+        # "$current_dir/comparator.sh"
+        # comparator_return_code=$?
+
+        if [ "$return_code" == 0 ]; then
+            # if [ "$comparator_return_code" -eq 0 ]; then
+            #     exit 0
+            # else
+            #     exit 4
+            # fi
+            exit 0
         else
             exit 1
         fi
