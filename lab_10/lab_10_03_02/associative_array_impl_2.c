@@ -1,175 +1,248 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 #include "associative_array.h"
 
-typedef struct tree_node 
+typedef struct assoc_array_node 
 {
-    key key;
-    value value;
-    struct tree_node *left;
-    struct tree_node *right;
-} tree_node_t;
+    char *key;
+    int value;
+    struct assoc_array_node *left;
+    struct assoc_array_node *right;
+} assoc_array_node_t;
 
-struct assoc_array 
+struct assoc_array_type 
 {
-    tree_node_t *root;
+    assoc_array_node_t *root;
 };
 
-void destroy_tree(tree_node_t *node) 
+
+
+assoc_array_t assoc_array_create(void) 
+{
+    assoc_array_t arr = malloc(sizeof(struct assoc_array_type));
+    if (!arr) 
+        return NULL;
+    arr->root = NULL;
+    return arr;
+}
+
+static void free_tree(assoc_array_node_t *node) 
 {
     if (node) {
-        destroy_tree(node->left);
-        destroy_tree(node->right);
+        free_tree(node->left);
+        free_tree(node->right);
         free(node->key);
         free(node);
     }
 }
 
-assoc_array_t associative_array_create() 
+void assoc_array_destroy(assoc_array_t *arr) 
 {
-    assoc_array_t array = malloc(sizeof(assoc_array_t));
-    if (!array) 
-        return NULL;
-    array->root = NULL;
-    return array;
-}
-
-void associative_array_destroy(assoc_array_t array) 
-{
-    if (!array) 
+    if (!arr || !*arr) 
         return;
-    destroy_tree(array->root);
-    free(array);
+    free_tree((*arr)->root);
+    free(*arr);
+    *arr = NULL;
 }
 
-tree_node_t* add_node(tree_node_t *node, key k, value v) 
+
+
+static assoc_array_node_t* insert_node(assoc_array_node_t *node, const char *key, int num, assoc_array_error_t *err) 
 {
     if (!node) 
     {
-        tree_node_t *new_node = malloc(sizeof(tree_node_t));
+        assoc_array_node_t *new_node = malloc(sizeof(assoc_array_node_t));
         if (!new_node) 
+        {
+            *err = ASSOC_ARRAY_MEM;
             return NULL;
-        new_node->key = malloc(strlen(k));
+        }
+        new_node->key = malloc(strlen(key) + 1);
         if (!new_node->key) 
         {
             free(new_node);
+            *err = ASSOC_ARRAY_MEM;
             return NULL;
         }
-        strcpy(new_node->key, k);
-        new_node->value = v;
+        strcpy(new_node->key, key);
+        new_node->value = num;
         new_node->left = new_node->right = NULL;
+        *err = ASSOC_ARRAY_OK;
         return new_node;
     }
 
-    int cmp = strcmp(k, node->key);
+    int cmp = strcmp(key, node->key);
     if (cmp < 0) 
-        node->left = add_node(node->left, k, v);
-    else if (cmp > 0)
-        node->right = add_node(node->right, k, v);
-    else
-        node->value = v;
+        node->left = insert_node(node->left, key, num, err);
+    else if (cmp > 0) 
+        node->right = insert_node(node->right, key, num, err);
+    else 
+        *err = ASSOC_ARRAY_KEY_EXISTS;
+    
     return node;
 }
 
-bool associative_array_add(assoc_array_t array, key k, value v) 
+
+assoc_array_error_t assoc_array_insert(assoc_array_t arr, const char *key, int num) 
 {
-    if (!array || !k) 
-        return false;
-    array->root = add_node(array->root, k, v);
-    return true;
+    if (!arr || !key || strlen(key) == 0) 
+        return ASSOC_ARRAY_INVALID_PARAM;
+
+    assoc_array_error_t err = ASSOC_ARRAY_OK;
+    arr->root = insert_node(arr->root, key, num, &err);
+    return err;
 }
 
-tree_node_t* find_node(tree_node_t *node, key k) 
+
+static assoc_array_node_t* find_node(assoc_array_node_t *node, const char *key) 
 {
     if (!node) 
         return NULL;
-    int cmp = strcmp(k, node->key);
-    if (cmp == 0) return node;
-    if (cmp < 0) return find_node(node->left, k);
-    return find_node(node->right, k);
-}
 
-value associative_array_get(assoc_array_t array, key k) 
-{
-    if (!array || !k) return -1;
-    tree_node_t *node = find_node(array->root, k);
-    return node ? node->value : -1;
-}
-
-static tree_node_t *find_minimum(tree_node_t *node) 
-{
-    while (node->left != NULL) 
-        node = node->left;
+    int cmp = strcmp(key, node->key);
+    if (cmp < 0) 
+        return find_node(node->left, key);
+    if (cmp > 0) 
+        return find_node(node->right, key);
     return node;
 }
 
-// Вспомогательная функция для удаления узла из дерева
-static tree_node_t *remove_node(tree_node_t *node, key k, bool *success) 
+
+assoc_array_error_t assoc_array_find(const assoc_array_t arr, const char *key, int **num) 
 {
-    if (node == NULL) 
-    {
-        *success = false;
+    if (!arr || !key || strlen(key) == 0 || !num) return ASSOC_ARRAY_INVALID_PARAM;
+
+    assoc_array_node_t *node = find_node(arr->root, key);
+    if (!node) return ASSOC_ARRAY_NOT_FOUND;
+
+    *num = &node->value;
+    return ASSOC_ARRAY_OK;
+}
+
+static assoc_array_node_t* delete_node(assoc_array_node_t *node, const char *key, assoc_array_error_t *err) 
+{
+    if (!node) {
+        *err = ASSOC_ARRAY_NOT_FOUND;
         return NULL;
     }
 
-    int cmp = strcmp(k, node->key);
+    int cmp = strcmp(key, node->key);
     if (cmp < 0) 
     {
-        node->left = remove_node(node->left, k, success);
-    }
+        node->left = delete_node(node->left, key, err);
+    } 
     else if (cmp > 0) 
     {
-        node->right = remove_node(node->right, k, success);
+        node->right = delete_node(node->right, key, err);
     } 
     else 
     {
-        *success = true;
-
-        if (node->left == NULL && node->right == NULL) 
-        {
+        assoc_array_node_t *temp;
+        if (!node->left) {
+            temp = node->right;
             free(node->key);
             free(node);
-            return NULL;
-        }
-
-        if (node->left == NULL) 
-        {
-            tree_node_t *right_child = node->right;
-            free(node->key);
-            free(node);
-            return right_child;
+            *err = ASSOC_ARRAY_OK;
+            return temp;
         } 
-        else if (node->right == NULL) 
+        else if (!node->right) 
         {
-            tree_node_t *left_child = node->left;
+            temp = node->left;
             free(node->key);
             free(node);
-            return left_child;
+            *err = ASSOC_ARRAY_OK;
+            return temp;
         }
 
-        tree_node_t *min_node = find_minimum(node->right);
+        assoc_array_node_t *min_right = node->right;
+        while (min_right->left) 
+            min_right = min_right->left;
+
         free(node->key);
-        node->key = malloc(strlen(min_node->key));
+        node->key = malloc(strlen(min_right->key) + 1);
         if (!node->key)
             return NULL;
-        strcpy(node->key, min_node->key);
-        node->value = min_node->value;
-        node->right = remove_node(node->right, min_node->key, success);
+        strcpy(node->key, min_right->key);
+        node->value = min_right->value;
+        node->right = delete_node(node->right, min_right->key, err);
     }
 
     return node;
 }
 
-// Основная функция удаления
-bool associative_array_remove(assoc_array_t array, key k) 
+
+assoc_array_error_t assoc_array_remove(assoc_array_t arr, const char *key) 
 {
-    if (array == NULL || k == NULL) {
-        return false;
+    if (!arr || !key || strlen(key) == 0) 
+        return ASSOC_ARRAY_INVALID_PARAM;
+
+    assoc_array_error_t err = ASSOC_ARRAY_OK;
+    arr->root = delete_node(arr->root, key, &err);
+    return err;
+}
+
+assoc_array_error_t assoc_array_clear(assoc_array_t arr) 
+{
+    if (!arr) 
+        return ASSOC_ARRAY_INVALID_PARAM;
+
+    free_tree(arr->root);
+    arr->root = NULL;
+    return ASSOC_ARRAY_OK;
+}
+
+
+static void traverse_tree(assoc_array_node_t *node, void (*action)(const char *key, int *num, void *param), void *param) 
+{
+    if (!node) return;
+    traverse_tree(node->left, action, param);
+    action(node->key, &node->value, param);
+    traverse_tree(node->right, action, param);
+}
+
+assoc_array_error_t assoc_array_each(const assoc_array_t arr, void (*action)(const char *key, int *num, void *param), void *param) 
+{
+    if (!arr || !action) return ASSOC_ARRAY_INVALID_PARAM;
+
+    traverse_tree(arr->root, action, param);
+    return ASSOC_ARRAY_OK;
+}
+
+
+assoc_array_error_t assoc_array_min(const assoc_array_t arr, int **num) 
+{
+    if (!arr || !num) return ASSOC_ARRAY_INVALID_PARAM;
+
+    assoc_array_node_t *current = arr->root;
+    if (!current) return ASSOC_ARRAY_NOT_FOUND;
+
+    while (current->left) {
+        current = current->left;
     }
 
-    bool success = false;
-    array->root = remove_node(array->root, k, &success);
-    return success;
+    *num = &current->value;
+    return ASSOC_ARRAY_OK;
 }
+
+assoc_array_error_t assoc_array_max(const assoc_array_t arr, int **num) 
+{
+    if (!arr || !num) 
+        return ASSOC_ARRAY_INVALID_PARAM;
+
+    assoc_array_node_t *current = arr->root;
+    if (!current) return ASSOC_ARRAY_NOT_FOUND;
+
+    while (current->right) {
+        current = current->right;
+    }
+
+    *num = &current->value;
+    return ASSOC_ARRAY_OK;
+}
+
+
+
+
+
+

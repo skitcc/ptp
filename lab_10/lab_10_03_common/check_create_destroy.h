@@ -6,6 +6,6 @@
 #include "associative_array.h"
 
 
-Suite* create_destroy_suite(void);
+Suite *create_destroy_suite(void);
 
 #endif
