@@ -1,6 +1,4 @@
 ln -s ../lab_10_03_common/associative_array.h associative_array.h
-ln -s ../lab_10_03_common/check_add.c check_add.c
-ln -s ../lab_10_03_common/check_add.h check_add.h
 ln -s ../lab_10_03_common/check_clear.c check_clear.c
 ln -s ../lab_10_03_common/check_clear.h check_clear.h
 ln -s ../lab_10_03_common/check_create_destroy.c check_create_destroy.c
