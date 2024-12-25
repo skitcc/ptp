@@ -4,6 +4,8 @@ working_dir=$(dirname "$(realpath "$0")")
 
 export LD_LIBRARY_PATH="$working_dir/../../lib"
 
+echo "LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
+
 file_stream_in="$1"
 file_stream_out_expected="$2"
 
@@ -18,7 +20,7 @@ fi
 add_args=()
 for arg in "${add_args_temp[@]}"; do
     if [[ "$arg" == ./* ]]; then
-        add_args+=("../../${arg}")
+        add_args+=("$working_dir/../../${arg}")
     else
         add_args+=("$arg")
     fi

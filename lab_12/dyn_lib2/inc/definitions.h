@@ -1,7 +1,7 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
-#define MAX_LEN_FILENAME 50
+#define MAX_LEN_FILENAME 500
 
 #define ERR_OPEN_FILE 1
 #define ERR_ALLOCATION 2

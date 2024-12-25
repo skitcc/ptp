@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <dlfcn.h>
+// #include <sys/stat.h>
 
 #include "definitions.h"
 #include "check_args.h"
@@ -11,17 +12,31 @@ int main(int argc, const char *argv[])
     bool need_filter = false;
     int rc = 0;
     if ((rc = check(argc, argv, &need_filter)) != 0)
+    {
+        printf("111");
         return rc;
-    
+    }
     char filename_in[MAX_LEN_FILENAME + 1] = { 0 };
     char filename_out[MAX_LEN_FILENAME + 1] = { 0 };
     strncpy(filename_in, argv[1], MAX_LEN_FILENAME + 1);
     strncpy(filename_out, argv[2], MAX_LEN_FILENAME + 1);
 
-    void *handle = dlopen("./lib/libdyn.so", RTLD_NOW);
+
+    printf("%s\n", filename_in);
+
+
+    // struct stat buffer;
+    // if (stat("libdyn.so", &buffer) == 0) {
+    //     printf("File exists.\n");
+    // } else {
+    //     // Файл не существует
+    //     printf("File does not exist.\n");
+    // }
+
+    void *handle = dlopen("libdyn.so", RTLD_NOW);
     if (!handle)
     {
-        dlclose(handle);
+        // dlclose(handle);
         return 1;
     }
     short (*read_quantity)(char *, size_t *) = (short (*)(char *, size_t *))dlsym(handle, "read_quantity");    
@@ -79,14 +94,17 @@ int main(int argc, const char *argv[])
     size_t quantity = 0;
     if ((rc = read_quantity(filename_in, &quantity)))
     {
+        dlclose(handle);
         return rc;
     }
     int *pb_src, *pe_src;
 
     pb_src = malloc(quantity * sizeof(int));
     if (pb_src == NULL)
+    {
+        dlclose(handle);
         return ERR_ALLOC_MEM;
-
+    }
     pe_src = pb_src + quantity; 
 
     fill_array(filename_in, pb_src, pe_src);
@@ -116,6 +134,7 @@ int main(int argc, const char *argv[])
         dest_pb = malloc(counter * sizeof(int));
         if (!dest_pb)
         {
+            dlclose(handle);
             free(pb_src);
             return 1;
         }
@@ -128,12 +147,14 @@ int main(int argc, const char *argv[])
         rc = key(pb_src, pe_src, dest_pb);
         if (rc != ERR_EMPTY_FILE_AFTER_FILTER && rc)
         {
+            dlclose(handle);
             free(pb_src);
             free(dest_pb);
             return rc;
         }
         else if (rc == ERR_EMPTY_FILE_AFTER_FILTER)
         {
+            dlclose(handle);
             free(pb_src);
             return rc;
         }
@@ -144,11 +165,15 @@ int main(int argc, const char *argv[])
         size_t n = pe_src - pb_src;
         dest_pb = malloc(n * sizeof(int));
         if (dest_pb == NULL)
+        {
+            dlclose(handle);
             return ERR_ALLOC_MEM;
+        }
         dest_pe = dest_pb + n;
 
         if ((rc = cpy_arr(pb_src, pe_src, dest_pb)))
         {
+            dlclose(handle);
             free(pb_src);
             free(dest_pb);
             return rc;
@@ -161,11 +186,12 @@ int main(int argc, const char *argv[])
     mysort(dest_pb, new_len, sizeof(int), compare_ints);
     if ((rc = print_to_file(dest_pb, dest_pe, filename_out)))
     {
+        dlclose(handle);
         free(pb_src);
         free(dest_pb);
         return rc;
     }
     free(pb_src);
     free(dest_pb); 
-    dlclose(handle);
+    // dlclose(handle);
 }

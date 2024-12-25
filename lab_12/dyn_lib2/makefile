@@ -2,16 +2,15 @@
 SRC_DIR := ./src/
 OUT_DIR := ./out/
 INC_DIR := ./inc/
-LIB_DIR := ./lib/
-
+LIB_DIR := \$(shell realpath ./lib/)
 # Создание директорий для объектных файлов
 $(shell mkdir -p $(OUT_DIR))
 $(shell mkdir -p $(LIB_DIR))
 
 # Компилятор и флаги
 CC := gcc
-CFLAGS := -std=c99 -Wall -Werror -Wextra -Wfloat-equal -Wfloat-conversion -I$(INC_DIR)
-LDFLAGS := -L$(LIB_DIR) -ldyn
+CFLAGS := -std=c99 -Wall -Werror -Wextra -Wfloat-equal -Wfloat-conversion -g3 -I$(INC_DIR)
+LDFLAGS := -L$(LIB_DIR) -ldyn -Wl,-rpath,$(LIB_DIR)
 SHARED_FLAG := -shared
 
 # Исходные файлы
