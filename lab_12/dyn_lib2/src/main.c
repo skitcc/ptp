@@ -33,7 +33,7 @@ int main(int argc, const char *argv[])
     //     printf("File does not exist.\n");
     // }
 
-    void *handle = dlopen("libdyn.so", RTLD_NOW);
+    void *handle = dlopen("liblibdyn.so", RTLD_NOW);
     if (!handle)
     {
         // dlclose(handle);

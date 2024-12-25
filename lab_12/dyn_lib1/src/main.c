@@ -18,7 +18,7 @@ int main(int argc, const char *argv[])
     strncpy(filename_in, argv[1], MAX_LEN_FILENAME + 1);
     strncpy(filename_out, argv[2], MAX_LEN_FILENAME + 1);
 
-    void *handle = dlopen("./lib/libdn1.so", RTLD_NOW);
+    void *handle = dlopen("libdn1.so", RTLD_NOW);
     if (!handle)
     {
         dlclose(handle);

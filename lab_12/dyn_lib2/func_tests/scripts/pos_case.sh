@@ -2,9 +2,9 @@
 
 working_dir=$(dirname "$(realpath "$0")")
 
-export LD_LIBRARY_PATH="$working_dir/../../lib"
+# export LD_LIBRARY_PATH="$working_dir/../../lib"
 
-echo "LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
+# echo "LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
 
 file_stream_in="$1"
 file_stream_out_expected="$2"

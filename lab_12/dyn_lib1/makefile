@@ -11,7 +11,7 @@ $(shell mkdir -p $(LIB_DIR))
 # Компилятор и флаги
 CC := gcc
 CFLAGS := -std=c99 -Wall -Werror -Wextra -Wfloat-equal -Wfloat-conversion -I$(INC_DIR)
-LDFLAGS := -L$(LIB_DIR) -ldn1
+LDFLAGS := -L$(LIB_DIR) -Wl,-rpath,$(PWD)/$(LIB_DIR)
 SHARED_FLAG := -shared
 
 # Исходные файлы
@@ -37,7 +37,7 @@ all: app.exe
 
 # Сборка основного приложения с динамической библиотекой
 app.exe: $(APP_OBJ) $(MAIN_OBJ) $(SHARED_LIB)
-	$(CC) $(APP_OBJ) $(MAIN_OBJ) -o $@ $(LDFLAGS)
+	$(CC) $(APP_OBJ) $(MAIN_OBJ) -o $@ $(LDFLAGS) -ldn1
 
 # Сборка динамической библиотеки
 $(SHARED_LIB): $(LIB_OBJ)
