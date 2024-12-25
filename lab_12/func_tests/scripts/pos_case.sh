@@ -36,7 +36,7 @@ filename2=$(basename "$file_name")
 if [ "$filename1" != "$filename2" ]; then
     exit 1
 fi
-
+echo "1111"
 compare_files() {
     if "$working_dir/comparator.sh" "1.txt" "$file_stream_out_expected"; then
         exit 0

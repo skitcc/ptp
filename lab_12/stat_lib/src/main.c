@@ -7,6 +7,7 @@
 #include "operations.h"
 #include "check_args.h"
 #include "print.h"
+#include "my_sort.h"
 
 int main(int argc, const char *argv[])
 {
@@ -39,7 +40,37 @@ int main(int argc, const char *argv[])
 
     if (need_filter)
     {
-        rc = key(pb_src, pe_src, &dest_pb, &dest_pe);
+        const int *start_src = pb_src;
+        int counter = 0;
+        int sum = 0;
+        while (start_src < pe_src)
+        {
+            sum += *start_src;  
+            start_src++;
+        }
+        int temp_sum = sum;
+        start_src = pb_src;
+        while (start_src < pe_src - 1)
+        {
+            temp_sum -= *start_src;
+            if (*start_src > temp_sum)
+                counter++;
+            
+            start_src++;
+        }
+        dest_pb = malloc(counter * sizeof(int));
+        if (!dest_pb)
+        {
+            free(pb_src);
+            return 1;
+        }
+
+        if (counter == 0)
+            return ERR_EMPTY_FILE_AFTER_FILTER;
+
+        dest_pe = dest_pb + counter;
+        printf("counter value : %d\n", counter);
+        rc = key(pb_src, pe_src, dest_pb);
         if (rc != ERR_EMPTY_FILE_AFTER_FILTER && rc)
         {
             free(pb_src);
@@ -51,15 +82,33 @@ int main(int argc, const char *argv[])
             free(pb_src);
             return rc;
         }
+        print_to_file(dest_pb, dest_pe, filename_out);
     }
     else
     {
-        if ((rc = cpy_arr(pb_src, pe_src, &dest_pb, &dest_pe)))
+        size_t n = pe_src - pb_src;
+        dest_pb = malloc(n * sizeof(int));
+        if (dest_pb == NULL)
+            return ERR_ALLOC_MEM;
+        dest_pe = dest_pb + n;
+
+        if ((rc = cpy_arr(pb_src, pe_src, dest_pb)))
         {
             free(pb_src);
             free(dest_pb);
             return rc;
         }
+        print_to_file(dest_pb, dest_pe, filename_out);
+
+    }
+
+    size_t new_len = dest_pe - dest_pb;
+    mysort(dest_pb, new_len, sizeof(int), compare_ints);
+    if ((rc = print_to_file(dest_pb, dest_pe, filename_out)))
+    {
+        free(pb_src);
+        free(dest_pb);
+        return rc;
     }
     free(pb_src);
     free(dest_pb); 

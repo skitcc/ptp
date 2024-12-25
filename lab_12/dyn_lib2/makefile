@@ -10,12 +10,12 @@ $(shell mkdir -p $(LIB_DIR))
 
 # Компилятор и флаги
 CC := gcc
-CFLAGS := -std=c99 -Wall -Werror -pedantic -Wextra -Wfloat-equal -Wfloat-conversion -I$(INC_DIR)
+CFLAGS := -std=c99 -Wall -Werror -Wextra -Wfloat-equal -Wfloat-conversion -I$(INC_DIR)
 LDFLAGS := -L$(LIB_DIR) -ldyn
 SHARED_FLAG := -shared
 
 # Исходные файлы
-LIB_SRC := read.c print.c operations.c
+LIB_SRC := read.c print.c operations.c my_sort.c
 APP_SRC := $(filter-out $(LIB_SRC), $(filter-out main.c, $(notdir $(wildcard $(SRC_DIR)*.c))))
 MAIN_SRC := main.c
 
