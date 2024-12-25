@@ -1,0 +1,14 @@
+#ifndef DEFINITIONS_H
+#define DEFINITIONS_H
+
+#define MAX_LEN_FILENAME 50
+
+#define ERR_OPEN_FILE 1
+#define ERR_ALLOCATION 2
+#define ERR_WRONG_ARGC 3
+#define ERR_ALLOC_MEM 4
+#define ERR_WRONG_FILTER 5
+#define ERR_EMPTY_FILE 6
+#define ERR_EMPTY_FILE_AFTER_FILTER 7
+#define ERR_POINTERS 8
+#endif
